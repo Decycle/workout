@@ -61,7 +61,15 @@ const PermanentDrawerLeft = () => {
           bgcolor: 'background.default',
           p: 5,
           ml: 2,
-        }}></Box>
+        }}>
+        <Typography variant='h7' component='h1'>
+          Welcome, User 👋
+        </Typography>
+
+        <Typography variant='subtitle1' component='h1'>
+          Here is your fitness history.
+        </Typography>
+      </Box>
     </Box>
   )
 }
