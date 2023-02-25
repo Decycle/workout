@@ -1,19 +1,20 @@
 // import { orange } from '@mui/material/colors'
-import {
-  createTheme,
-  ThemeOptions,
-} from '@mui/material/styles'
+import { createTheme } from '@mui/material/styles'
 
-const themeOptions = {
+const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
       main: '#3f51b5',
+      light: '#f5f7fe',
     },
     secondary: {
       main: '#f50057',
     },
   },
-}
+  typography: {
+    fontFamily: 'Montserrat, Open Sans, sans-serif',
+  },
+})
 
-export default createTheme(themeOptions)
+export default theme
