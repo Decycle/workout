@@ -5,13 +5,22 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#3f51b5',
-      light: '#f5f7fe',
+      main: '#4656b9',
+      light: '#f5f9ff',
+      dark: '#331371',
+      contrastText: '#fff2de',
     },
     secondary: {
-      main: '#f50057',
+      main: '#d10054',
+      light: '#ea7da9',
+      dark: '#730041',
+      contrastText: '#ffffff',
+    },
+    paper: {
+      main: '#ffffff',
     },
   },
+
   typography: {
     fontFamily: 'Montserrat, Open Sans, sans-serif',
   },
