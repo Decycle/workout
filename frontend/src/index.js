@@ -5,6 +5,7 @@ import App from './UI/App'
 import reportWebVitals from './reportWebVitals'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@emotion/react'
+import { BrowserRouter } from 'react-router-dom'
 import theme from './UI/theme'
 
 import {
@@ -33,7 +34,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
 )

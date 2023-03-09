@@ -8,9 +8,7 @@ import {
   CardContent,
   Fab,
 } from '@mui/material'
-
 import Grid2 from '@mui/material/Unstable_Grid2'
-import BarChart from './bar'
 
 const SearchBar = () => {
   return (
@@ -54,7 +52,7 @@ const AppBar = () => {
   )
 }
 
-const HomePage = () => {
+const NewWorkOutPage = () => {
   return (
     <Box
       component='main'
@@ -65,21 +63,8 @@ const HomePage = () => {
         ml: 2,
       }}>
       <AppBar />
-      <Box sx={{ maxWidth: 600 }}>
-        <BarChart />
-      </Box>
-      <Box
-        sx={{
-          position: 'fixed',
-          bottom: 32,
-          right: 32,
-        }}>
-        <Fab color='primary'>
-          <Add />
-        </Fab>
-      </Box>
     </Box>
   )
 }
 
-export default HomePage
+export default NewWorkOutPage
