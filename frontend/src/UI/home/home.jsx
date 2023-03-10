@@ -11,22 +11,7 @@ import {
 
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
-
-const SearchBar = () => {
-  return (
-    <TextField
-      id='outlined-basic'
-      label='Search'
-      variant='outlined'
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position='end'>
-            <Search />
-          </InputAdornment>
-        ),
-      }}></TextField>
-  )
-}
+import SearchBar from '../searchbar'
 
 const AppBar = () => {
   return (
