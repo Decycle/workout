@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Add, Search } from '@mui/icons-material'
 import {
   Box,
@@ -9,9 +9,14 @@ import {
   CardContent,
   Fab,
   Autocomplete,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import SearchBar from '../searchbar'
+import { DataGrid } from '@mui/x-data-grid'
+import { useCallback } from 'react'
 
 const AppBar = () => {
   return (
@@ -39,6 +44,26 @@ const AppBar = () => {
   )
 }
 
+const ListView = ({ workoutData }) => {
+  console.log(workoutData)
+  return (
+    <List
+      sx={{
+        width: '100%',
+        maxWidth: 180,
+        bgcolor: 'background.paper',
+      }}>
+      {workoutData.map((data) => (
+        <ListItem key={data.name}>
+          <ListItemText
+            primary={data.name}
+            secondary={data.type}
+          />
+        </ListItem>
+      ))}
+    </List>
+  )
+}
 const exerciseTypes = [
   { label: 'Any', value: 'any' },
   { label: 'Cardio', value: 'cardio' },
@@ -96,83 +121,128 @@ const NewWorkoutForm = () => {
     value: 'any',
   })
 
-  const searchExercise = async () => {
+  const [workoutData, setWorkoutData] = useState([])
+
+  const searchExercise = useCallback(async () => {
     console.log(exerciseType)
     console.log(muscleType)
     console.log(difficultyType)
 
     const requestUrl =
-      'https://api.api-ninjas.com/v1/exercises'
+      'https://api.api-ninjas.com/v1/exercises?'
 
-    const response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key':
-          'VPL/zRxgNx/o43ZtrGMS4A==W1hr1nw2TT4k7Gy9',
-      },
-    })
+    const searchParams = {}
+
+    if (exerciseType.value !== 'any') {
+      searchParams.exercise_type = exerciseType.value
+    }
+
+    if (muscleType.value !== 'any') {
+      searchParams.muscle_group = muscleType.value
+    }
+
+    if (difficultyType.value !== 'any') {
+      searchParams.difficulty = difficultyType.value
+    }
+
+    const response = await fetch(
+      requestUrl + new URLSearchParams(searchParams),
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Api-Key':
+            'VPL/zRxgNx/o43ZtrGMS4A==W1hr1nw2TT4k7Gy9',
+        },
+      }
+    )
 
     const data = await response.json()
-
+    setWorkoutData(
+      data.map((data, index) => ({
+        id: index,
+        ...data,
+      }))
+    )
     console.log(data)
-  }
+  }, [difficultyType, exerciseType, muscleType])
+
+  // useEffect(() => {
+  //   searchExercise()
+  // }, [])
 
   return (
     <Box
       sx={{
-        mt: 2,
-        width: 300,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         gap: 2,
       }}>
-      <Autocomplete
-        disableClearable
-        options={exerciseTypes}
-        value={exerciseType}
-        onChange={(event, newValue) => {
-          setExerciseType(newValue)
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label='Exercise Types' />
-        )}
-      />
-      <Autocomplete
-        disableClearable
-        options={muscleTypes}
-        value={muscleType}
-        onChange={(event, newValue) => {
-          setMuscleType(newValue)
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label='Muscle Groups' />
-        )}
-      />
+      <Box
+        sx={{
+          mt: 2,
+          width: 300,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}>
+        <Autocomplete
+          disableClearable
+          options={exerciseTypes}
+          value={exerciseType}
+          onChange={(_, newValue) => {
+            setExerciseType(newValue)
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.value === value.value
+          }
+          renderInput={(params) => (
+            <TextField {...params} label='Exercise Types' />
+          )}
+        />
+        <Autocomplete
+          disableClearable
+          options={muscleTypes}
+          value={muscleType}
+          onChange={(event, newValue) => {
+            setMuscleType(newValue)
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.value === value.value
+          }
+          renderInput={(params) => (
+            <TextField {...params} label='Muscle Groups' />
+          )}
+        />
 
-      <Autocomplete
-        disableClearable
-        options={difficultyTypes}
-        value={difficultyType}
-        onChange={(event, newValue) => {
-          setDifficultyType(newValue)
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label='Difficulty' />
-        )}
-      />
+        <Autocomplete
+          disableClearable
+          options={difficultyTypes}
+          value={difficultyType}
+          onChange={(event, newValue) => {
+            setDifficultyType(newValue)
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.value === value.value
+          }
+          renderInput={(params) => (
+            <TextField {...params} label='Difficulty' />
+          )}
+        />
 
-      <Fab
-        variant='extended'
-        size='medium'
-        color='primary'
-        aria-label='add'
-        sx={{ mt: 2 }}
-        onClick={searchExercise}>
-        >
-        <Search sx={{ mr: 1 }} />
-        Search Exercise
-      </Fab>
+        <Fab
+          variant='extended'
+          size='medium'
+          color='primary'
+          aria-label='add'
+          sx={{ mt: 2 }}
+          onClick={searchExercise}>
+          <Search sx={{ mr: 1 }} />
+          Search Exercise
+        </Fab>
+      </Box>
+
+      <ListView workoutData={workoutData} />
     </Box>
   )
 }
