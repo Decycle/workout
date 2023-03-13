@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   Add,
   Circle,
+  Clear,
   Delete,
   Search,
 } from '@mui/icons-material'
@@ -23,6 +24,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Button,
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import SearchBar from '../searchbar'
@@ -113,13 +115,13 @@ const NewWorkoutForm = () => {
     useState(null)
   const [openPage, setOpenPage] = useState(false)
 
-  const searchExercise = useCallback(async () => {
-    console.log(search)
+  const searchExercise = useCallback(async (prompt) => {
+    console.log(prompt)
     setIsLoading(true)
 
     const response = await fetch(
       `http://127.0.0.1:8000/api/search?prompt=${encodeURIComponent(
-        search
+        prompt
       )}`,
       {
         method: 'GET',
@@ -132,7 +134,19 @@ const NewWorkoutForm = () => {
     setIsLoading(false)
     setWorkoutData(data)
     console.log(data)
-  }, [search])
+  }, [])
+
+  const sampleSearch = [
+    'easy arm workout',
+    'advanced leg training',
+    'relaxing yoga',
+    'upper arm strength training',
+    'chest workout',
+    'full body workout',
+    'weight loss routine',
+    'beginner workout',
+    'easy strength training',
+  ]
 
   return (
     <Box
@@ -150,7 +164,12 @@ const NewWorkoutForm = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Search />
+              <IconButton
+                onClick={() => {
+                  setSearch('')
+                }}>
+                {search === '' ? <Search /> : <Clear />}
+              </IconButton>
             </InputAdornment>
           ),
         }}
@@ -158,10 +177,36 @@ const NewWorkoutForm = () => {
         value={search}
         onKeyPress={(e) => {
           if (e.key === 'Enter') {
-            searchExercise()
+            searchExercise(search)
           }
         }}
       />
+      {search === '' && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}>
+          {sampleSearch
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 2)
+            .map((data) => (
+              <Button
+                key={data}
+                variant='outlined'
+                size='small'
+                onClick={() => {
+                  console.log(data)
+                  setSearch(data)
+                  searchExercise(data)
+                }}>
+                {data}
+              </Button>
+            ))}
+        </Box>
+      )}
       {isLoading && (
         <CircularProgress
           sx={{
@@ -209,17 +254,12 @@ const AddWorkoutPage = ({ open, closeFunc, data }) => {
           {` : ${data.instructions}`}
         </Typography>
       </DialogContent>
-      <Box
+      <Button
         sx={{
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          p: 2,
         }}>
-        <IconButton>
-          <Add />
-        </IconButton>
-      </Box>
+        Add
+      </Button>
     </Dialog>
   )
 }

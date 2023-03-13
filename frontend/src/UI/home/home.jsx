@@ -9,6 +9,8 @@ import {
   Fab,
 } from '@mui/material'
 
+import { useNavigate } from 'react-router-dom'
+
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
 import SearchBar from '../searchbar'
@@ -40,6 +42,8 @@ const AppBar = () => {
 }
 
 const HomePage = () => {
+  const navigate = useNavigate()
+
   return (
     <Box
       component='main'
@@ -59,7 +63,9 @@ const HomePage = () => {
           bottom: 32,
           right: 32,
         }}>
-        <Fab color='primary'>
+        <Fab
+          color='primary'
+          onClick={() => navigate('/new-workout')}>
           <Add />
         </Fab>
       </Box>
