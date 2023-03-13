@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Add, Circle, Search } from '@mui/icons-material'
+import {
+  Add,
+  Circle,
+  Delete,
+  Search,
+} from '@mui/icons-material'
 import {
   Box,
   InputAdornment,
@@ -13,6 +18,11 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
+  IconButton,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import SearchBar from '../searchbar'
@@ -45,16 +55,32 @@ const AppBar = () => {
   )
 }
 
-const ListView = ({ workoutData }) => {
+const ListView = ({
+  workoutData,
+  openFunc,
+  selectFunc,
+}) => {
   return (
     <List
       sx={{
         width: '100%',
-        maxWidth: 360,
+        maxWidth: 500,
         bgcolor: 'background.paper',
       }}>
       {workoutData.map((data) => (
-        <ListItem key={data.name}>
+        <ListItem
+          key={data.name}
+          secondaryAction={
+            <IconButton
+              edge='end'
+              aria-label='delete'
+              onClick={() => {
+                openFunc()
+                selectFunc(data)
+              }}>
+              <Add />
+            </IconButton>
+          }>
           <ListItemAvatar>
             <Circle
               sx={{
@@ -81,8 +107,15 @@ const NewWorkoutForm = () => {
   const [search, setSearch] = useState('')
   const [workoutData, setWorkoutData] = useState([])
 
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [currentWorkoutData, setCurrentWorkoutData] =
+    useState(null)
+  const [openPage, setOpenPage] = useState(false)
+
   const searchExercise = useCallback(async () => {
     console.log(search)
+    setIsLoading(true)
 
     const response = await fetch(
       `http://127.0.0.1:8000/api/search?prompt=${encodeURIComponent(
@@ -96,6 +129,7 @@ const NewWorkoutForm = () => {
       }
     )
     const data = await response.json()
+    setIsLoading(false)
     setWorkoutData(data)
     console.log(data)
   }, [search])
@@ -128,8 +162,65 @@ const NewWorkoutForm = () => {
           }
         }}
       />
-      <ListView workoutData={workoutData} />
+      {isLoading && (
+        <CircularProgress
+          sx={{
+            margin: 'auto',
+          }}
+        />
+      )}
+      <ListView
+        workoutData={workoutData}
+        openFunc={() => setOpenPage(true)}
+        selectFunc={setCurrentWorkoutData}
+      />
+      {currentWorkoutData && (
+        <AddWorkoutPage
+          open={openPage}
+          closeFunc={() => setOpenPage(false)}
+          data={currentWorkoutData}
+        />
+      )}
     </Box>
+  )
+}
+
+const AddWorkoutPage = ({ open, closeFunc, data }) => {
+  return (
+    <Dialog open={open} onClose={closeFunc}>
+      <DialogTitle sx={{ m: 0, pb: 3 }} variant='h5'>
+        {data.name}
+      </DialogTitle>
+      <DialogContent>
+        <Typography variant='subtitle1' component='h1'>
+          <b>Workout type</b>
+          {` : ${data.type}`}
+        </Typography>
+        <Typography variant='subtitle1' component='h1'>
+          <b>Muscle Group</b>
+          {` : ${data.muscle}`}
+        </Typography>
+        <Typography variant='subtitle1' component='h1'>
+          <b>Difficulty</b>
+          {` : ${data.difficulty}`}
+        </Typography>
+        <Typography variant='subtitle1' component='h1'>
+          <b>Instructions</b>
+          {` : ${data.instructions}`}
+        </Typography>
+      </DialogContent>
+      <Box
+        sx={{
+          mb: 3,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <IconButton>
+          <Add />
+        </IconButton>
+      </Box>
+    </Dialog>
   )
 }
 
