@@ -1,23 +1,42 @@
-import {useState} from 'react';
-import Calendar from 'react-calendar'; 
+import React, { Component,useState } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+const localizer = momentLocalizer(moment);
+
+const events = [
+  {
+      title: "Workout",
+      allDay: true,
+      start: new Date(2023, 2, 1),
+      end: new Date(2023, 2, 1),
+  },
+];
+
+
 
 function App() {
- const [date, setDate] = useState(new Date())
+  const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
+  const [allEvents, setAllEvents] = useState(events);
 
+  // function handleAddEvent () {
 
+  // }
 
-return (
- <div className="app">
-   <h1 className="header">React Calendar</h1>
-   <div className="calendar-container">
-     <Calendar onChange={setDate} value={date}/>
-   </div>
-   <div className="text-center">
-      Selected date: {date.toDateString()}
-   </div>
- </div>
-  )
-
+  return (
+    <div className="App">
+      <Calendar
+        localizer={localizer}
+        defaultDate={new Date()}
+        defaultView="month"
+        events={allEvents}
+        style={{ height: "100vh" }}
+      />
+    </div>
+  );
 }
+  
+
 
 export default App;
