@@ -11,9 +11,8 @@ import {
 
 import Grid2 from '@mui/material/Unstable_Grid2'
 
-import DataGridCalendar from './datagrid'
+import DataGridTable from './datagrid'
 import SearchBar from '../searchbar'
-import { DataGrid } from '@mui/x-data-grid'
 
 const AppBar = () => {
     return (
@@ -24,7 +23,7 @@ const AppBar = () => {
           </Typography>
   
           <Typography variant='subtitle1' component='h1'>
-            This is your workout calendar for this month.
+            This is your workout plan for ?DATE?
           </Typography>
         </Grid2>
   
@@ -41,7 +40,7 @@ const AppBar = () => {
     )
   }
 
-const CalendarPage = () => {
+const DailyWorkoutPage = () => {
     return (
       <Box
         component='main'
@@ -57,10 +56,10 @@ const CalendarPage = () => {
         flexDirection: 'column',
         gap: 4,
         }}>
-          <DataGridCalendar />
+          <DataGridTable />
         </Box>
       </Box>
     )
   }
 
-export default CalendarPage
+export default DailyWorkoutPage
