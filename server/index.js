@@ -1,22 +1,28 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import cors from 'cors';
+import { PineconeClient } from "@pinecone-database/pinecone";
 
 import workoutRoutes from './routes/workoutRoutes.js'
 
 const app = express();
 
-app.use('/workouts', workoutRoutes);
-
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-//Using temporary login for now
-const CONNECTION_URL = 'mongodb+srv://adminuser:adminpassword123@cluster0.ll0z4is.mongodb.net/?retryWrites=true&w=majority'; 
-const PORT = process.env.PORT || 5000;
+app.use('/workouts', workoutRoutes);
 
-mongoose.connect(CONNECTION_URL)
-  .then(()=> app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
-  .catch((error) => console.log(error.message));
+const pinecone = new PineconeClient();
+
+await pinecone.init({
+  environment: 'us-east-1-aws',
+  api_key: 'a826dad4-8d98-4adf-bac3-ce6c23e1ad1f',
+  project_name: 'workouts'
+});
+
+app.listen(5000, () => {
+  console.log('Server running on port 5000');
+});
+
+//const workout_index = pinecone.Index('/workout')

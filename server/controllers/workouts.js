@@ -1,5 +1,6 @@
 import workoutModel from '../models/workoutModel.js';
 
+//Handler to get workouts
 export const getWorkouts = async (req, res) => {
     try {
         const workoutModels = await workoutModel.find();
@@ -24,4 +25,8 @@ export const createWorkouts = async (req, res) => {
     } catch (error) {
         res.status(409).json({ mesage: error.message })
     }
-}; 
+};
+
+export const updateWorkout = async (req, res) => {
+    const { id: _id } = req.params;
+}
