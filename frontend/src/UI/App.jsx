@@ -32,6 +32,7 @@ import {
 
 import HomePage from './home/home'
 import NewWorkOutPage from './new_workout/new_workout'
+import CalendarPage from './calendar/calendar'
 
 const drawerWidth = 200
 
@@ -72,9 +73,10 @@ const DrawerLeft = () => {
             <ListItemText primary={'Workout'} />
           </ListItemButton>
         </ListItem>
-
+      
         <ListItem key={'Calender'}>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => navigate('/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
@@ -97,6 +99,11 @@ function App() {
           path='/new-workout'
           exact
           element={<NewWorkOutPage />}
+        />
+        <Route
+          path='/calendar'
+          exact
+          element={<CalendarPage />}
         />
       </Routes>
     </Box>

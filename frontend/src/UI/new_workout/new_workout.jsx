@@ -15,7 +15,6 @@ import {
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import SearchBar from '../searchbar'
-import { DataGrid } from '@mui/x-data-grid'
 import { useCallback } from 'react'
 
 const AppBar = () => {
