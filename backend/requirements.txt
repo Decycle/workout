@@ -4,3 +4,4 @@ openai>=0.27.2
 PyJWT>=2.6.0
 fastapi>=0.94.1
 uvicorn>=0.21.0
+pymongo>=4.3.3

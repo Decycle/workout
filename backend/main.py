@@ -1,17 +1,26 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.security import HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
-
 
 from dotenv import find_dotenv, load_dotenv
 from os import environ as env
 import pinecone
 import openai
 
+from datetime import datetime
+import pymongo
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 else:
     print("Please provide a .env file. See README.md for more information.")
+
+
+mongo_password = env.get("MONGO_PASSWORD")
+client = pymongo.MongoClient(f"mongodb+srv://decycleyang:{mongo_password}@cluster0.mtpybkd.mongodb.net/?retryWrites=true&w=majority")
+db = client["User-Workouts"]
+collection = db["workouts"]
 
 openai.api_key = env.get("OPENAI_API_KEY")
 
@@ -29,6 +38,8 @@ pinecone.init(
 )
 index = pinecone.Index('workout')
 
+
+token_auth_scheme = HTTPBearer()
 # Creates app instance
 app = FastAPI()
 
@@ -75,3 +86,18 @@ async def search(prompt: str):
 
     print(response)
     return response
+
+
+@app.get("/api/add-workout")
+def add_workout(name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
+    """A valid access token is required to access this route"""
+
+    result = token.credentials
+    collection.insert_one({
+        "token": result,
+        "workout_name": name,
+        "start_time": start,
+        "end_time": end
+    })
+
+    return result
