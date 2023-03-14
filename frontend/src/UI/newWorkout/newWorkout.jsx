@@ -241,7 +241,7 @@ const NewWorkoutForm = () => {
 }
 
 const AddWorkoutPage = ({ open, closeFunc, data }) => {
-  const { getAccessTokenSilently } = useAuth0()
+  const { user, getAccessTokenSilently } = useAuth0()
 
   const [startTime, setStartTime] = useState(dayjs())
   const [duration, setDuration] = useState(20)
@@ -255,16 +255,12 @@ const AddWorkoutPage = ({ open, closeFunc, data }) => {
     const startSeconds = startTime.unix()
     const endSeconds = endTime.unix()
 
-    console.log(
-      `http://localhost:8000/api/add-workout?name=${encodeURIComponent(
-        name
-      )}&start=${startSeconds}&end=${endSeconds}`
-    )
-
     const response = await fetch(
       `http://localhost:8000/api/add-workout?name=${encodeURIComponent(
         name
-      )}&start=${startSeconds}&end=${endSeconds}
+      )}&user=${
+        user.sub
+      }&start=${startSeconds}&end=${endSeconds}
       `,
       {
         method: 'GET',

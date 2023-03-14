@@ -89,15 +89,25 @@ async def search(prompt: str):
 
 
 @app.get("/api/add-workout")
-def add_workout(name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
+def add_workout(user: str, name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
-
     result = token.credentials
     collection.insert_one({
-        "token": result,
+        "user": user,
         "workout_name": name,
         "start_time": start,
         "end_time": end
     })
 
     return result
+
+@app.get("/api/get-workouts")
+def get_workouts(user: str, token: str = Depends(token_auth_scheme)):
+    """A valid access token is required to access this route"""
+
+    result = token.credentials
+    workouts = collection.find({"user": user})
+    print(result)
+    for doc in workouts:
+        print(doc)
+    return list(workouts)

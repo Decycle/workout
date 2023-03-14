@@ -106,8 +106,6 @@ const UserMenu = () => {
 
 const AuthButton = () => {
   const { isAuthenticated, isLoading } = useAuth0()
-
-  console.log('isAuthenticated: ', isAuthenticated)
   // console.log(user.picture)
   return (
     <div>

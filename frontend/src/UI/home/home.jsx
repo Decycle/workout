@@ -15,6 +15,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
 import AuthButton from '../authButton'
+import { useEffect, useState } from 'react'
 
 const AppBar = () => {
   const { user, isAuthenticated } = useAuth0()
@@ -46,6 +47,34 @@ const AppBar = () => {
 
 const HomePage = () => {
   const navigate = useNavigate()
+  const { user, getAccessTokenSilently, isAuthenticated } =
+    useAuth0()
+
+  const [userWorkouts, setUserWorkouts] = useState([])
+
+  const fetchWorkouts = async () => {
+    const accessToken = await getAccessTokenSilently()
+    const res = await fetch(
+      `http://localhost:8000/api/get-workouts?user=${encodeURIComponent(
+        user.sub
+      )}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+
+    const data = await res.json()
+    console.log(accessToken)
+    setUserWorkouts(data)
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchWorkouts()
+    }
+  }, [isAuthenticated])
 
   return (
     <Box
