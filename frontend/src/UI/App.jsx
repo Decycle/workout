@@ -55,7 +55,8 @@ const DrawerLeft = () => {
       <Box height={100} />
       <List>
         <ListItem key={'Home'}>
-          <ListItemButton onClick={() => navigate('/home')}>
+          <ListItemButton
+            onClick={() => navigate('/app/home')}>
             <ListItemIcon>
               <Home />
             </ListItemIcon>
@@ -65,7 +66,7 @@ const DrawerLeft = () => {
 
         <ListItem key={'New_Workout'}>
           <ListItemButton
-            onClick={() => navigate('/new-workout')}>
+            onClick={() => navigate('/app/new-workout')}>
             <ListItemIcon>
               <FitnessCenter />
             </ListItemIcon>
@@ -91,10 +92,17 @@ function App() {
     <Box sx={{ display: 'flex' }}>
       <DrawerLeft />
       <Routes>
-        <Route path='/' element={<Navigate to='/home' />} />
-        <Route path='/home' exact element={<HomePage />} />
         <Route
-          path='/new-workout'
+          path='/app'
+          element={<Navigate to='/app/home' />}
+        />
+        <Route
+          path='/app/home'
+          exact
+          element={<HomePage />}
+        />
+        <Route
+          path='/app/new-workout'
           exact
           element={<NewWorkOutPage />}
         />

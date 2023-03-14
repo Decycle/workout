@@ -120,7 +120,7 @@ const NewWorkoutForm = () => {
     setIsLoading(true)
 
     const response = await fetch(
-      `api/query?query=${encodeURIComponent(search)}`,
+      `../api/query?query=${encodeURIComponent(prompt)}`,
       {
         method: 'GET',
         headers: {

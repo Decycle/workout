@@ -15,7 +15,7 @@ if ENV_FILE:
 else:
     print("Please provide a .env file. See README.md for more information.")
 
-openai.api_key = "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"
+openai.api_key = env.get("OPENAI_API_KEY")
 
 def get_embedding(prompt):
     embeddings = openai.Embedding.create(
@@ -73,9 +73,14 @@ def logout():
         )
     )
 
-@app.route("/")
-def home():
+@app.route("/app/<path:path>")
+@app.route("/app")
+def home(path: str = None):
     return send_from_directory(app.static_folder, 'index.html')
+
+@app.route("/")
+def indexPage():
+    return redirect("/app/home")
 
 @app.route('/api/query', methods=['GET'])
 async def query():
