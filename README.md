@@ -24,7 +24,7 @@ And that's it! You should now be ready to start using our project.
 
 ---
 
-Install Commands:
+Installation Commands:
 
 ```
 # Frontend Installation
