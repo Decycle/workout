@@ -25,7 +25,7 @@ Note: If you are on a windows machine, you might have to change the ExecutionPol
 2. Set the ExecutionPolicy to true by running the command `Set-ExecutionPolicy RemoteSigned –Scope Process`.
 3. Activate the virtual environment by running the command `venv\Scripts\Activate.ps1`.
 4. Install the required Python packages by running the command `pip install -r requirements.txt`.
-5. Finally, start the server by running the command python `server.py`.
+5. Finally, start the server by running the command `uvicorn main:app --reload`.
 
 And that's it! You should now be ready to start using our project.
 
