@@ -93,6 +93,10 @@ function App() {
       <DrawerLeft />
       <Routes>
         <Route
+          path='/'
+          element={<Navigate to='/app/home' />}
+        />
+        <Route
           path='/app'
           element={<Navigate to='/app/home' />}
         />

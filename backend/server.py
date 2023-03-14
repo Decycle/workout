@@ -31,7 +31,7 @@ pinecone.init(
 )
 index = pinecone.Index('workout')
 
-app = Flask(__name__, static_folder="../frontend/build", static_url_path="/")
+app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY")
 
 oauth = OAuth(app)
@@ -46,45 +46,45 @@ oauth.register(
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
 )
 
-@app.route("/login")
-def login():
-    return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True)
-    )
+# @app.route("/login")
+# def login():
+#     return oauth.auth0.authorize_redirect(
+#         redirect_uri=url_for("callback", _external=True)
+#     )
 
-@app.route("/callback", methods=["GET", "POST"])
-def callback():
-    token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    return redirect("/")
+# @app.route("/callback", methods=["GET", "POST"])
+# def callback():
+#     token = oauth.auth0.authorize_access_token()
+#     session["user"] = token
+#     print(token)
+#     return redirect("/")
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(
-        "https://" + env.get("AUTH0_DOMAIN")
-        + "/v2/logout?"
-        + urlencode(
-            {
-                "returnTo": url_for("home", _external=True),
-                "client_id": env.get("AUTH0_CLIENT_ID"),
-            },
-            quote_via=quote_plus,
-        )
-    )
+# @app.route("/logout")
+# def logout():
+#     session.clear()
+#     return redirect(
+#         "https://" + env.get("AUTH0_DOMAIN")
+#         + "/v2/logout?"
+#         + urlencode(
+#             {
+#                 "returnTo": url_for("home", _external=True),
+#                 "client_id": env.get("AUTH0_CLIENT_ID"),
+#             },
+#             quote_via=quote_plus,
+#         )
+#     )
 
-@app.route("/app/<path:path>")
-@app.route("/app")
-def home(path: str = None):
-    return send_from_directory(app.static_folder, 'index.html')
+# @app.route("/app/<path:path>")
+# @app.route("/app")
+# def home(path: str = None):
+#     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route("/")
-def indexPage():
-    return redirect("/app/home")
+# @app.route("/")
+# def indexPage():
+#     return redirect("/app/home")
 
 @app.route('/api/query', methods=['GET'])
 async def query():
-
     prompt = request.args.get('query')
     embedding = get_embedding(prompt)
     difficulty = ""
@@ -113,5 +113,18 @@ async def query():
 
     return jsonify(response)
 
+@app.route('/users/info', methods=['GET'])
+async def get_user_info():
+    print(session.get("user"))
+
+@app.route('/users/add', methods=['POST'])
+async def add_workout():
+    data = request.get_json()
+    # token = session.get("user")
+    # print(token)
+    print(data)
+    # index.upsert(data['id'], data['embedding'], metadata=data['metadata'])
+    # return "Success"
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=env.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=env.get("PORT", 8000))

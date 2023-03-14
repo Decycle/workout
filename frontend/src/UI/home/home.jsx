@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
-import SearchBar from '../searchbar'
+import SignInButton from '../signInButton'
 
 const AppBar = () => {
   return (
@@ -35,7 +35,7 @@ const AppBar = () => {
           display: 'flex',
           justifyContent: 'flex-end',
         }}>
-        <SearchBar />
+        <SignInButton />
       </Grid2>
     </Grid2>
   )

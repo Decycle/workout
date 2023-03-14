@@ -27,8 +27,7 @@ import {
   Button,
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
-import SearchBar from '../searchbar'
-import { DataGrid } from '@mui/x-data-grid'
+import SignInButton from '../signInButton'
 import { useCallback } from 'react'
 
 const AppBar = () => {
@@ -51,7 +50,7 @@ const AppBar = () => {
           display: 'flex',
           justifyContent: 'flex-end',
         }}>
-        <SearchBar />
+        <SignInButton />
       </Grid2>
     </Grid2>
   )

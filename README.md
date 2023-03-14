@@ -43,3 +43,8 @@ python server.py
 ---
 
 The api keys will be deleted/rotated after the project is graded. If you want to use the project after that, you will need to create your own api keys and replace them in `backend/.env`.
+
+### Note:
+
+Open http://127.0.0.1:3000/ instead of http://localhost:3000/ . The latter's signin function
+does not work correctly because of auth0's configuration.
