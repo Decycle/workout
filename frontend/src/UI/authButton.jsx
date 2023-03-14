@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
+import { Logout } from '@mui/icons-material'
 import {
   Avatar,
   Chip,
@@ -95,7 +96,8 @@ const UserMenu = () => {
               },
             })
           }}>
-          Logout
+          <Logout />
+          Log out
         </MenuItem>
       </Menu>
     </div>
