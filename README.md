@@ -10,7 +10,7 @@ Welcome to our project! This is a short guide to get you started with the instal
 
 1. Navigate to the frontend folder in your terminal or command prompt.
 2. Run the following command: `npm install`. This will install all the required dependencies for the frontend.
-3. Once that is completed, run the command `npm build` to build the application.
+3. Once that is completed, run the command `npm run build` to build the application.
 
 ### Backend
 
@@ -30,7 +30,7 @@ Installation Commands:
 # Frontend Installation
 cd frontend
 npm install
-npm build
+npm run build
 
 # Backend Installation
 cd ../backend
