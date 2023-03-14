@@ -1,11 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Auth0Provider } from '@auth0/auth0-react'
 import './index.css'
 import App from './UI/App'
 import reportWebVitals from './reportWebVitals'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@emotion/react'
 import { BrowserRouter } from 'react-router-dom'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import theme from './UI/theme'
 
 import {
@@ -32,12 +35,21 @@ const root = ReactDOM.createRoot(
 )
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <Auth0Provider
+      domain='decycle.us.auth0.com'
+      clientId='xWovAgPiKvlIkrntto5ZGoHRZNRZNgDc'
+      authorizationParams={{
+        redirect_uri: 'http://localhost:3000/app/home',
+      }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <App />
+          </LocalizationProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </Auth0Provider>
   </React.StrictMode>
 )
 

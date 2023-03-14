@@ -31,7 +31,7 @@ import {
 } from 'react-router-dom'
 
 import HomePage from './home/home'
-import NewWorkOutPage from './new_workout/new_workout'
+import NewWorkOutPage from './newWorkout/newWorkout'
 
 const drawerWidth = 200
 
