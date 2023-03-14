@@ -10,17 +10,20 @@ import {
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
-import SignInButton from '../signInButton'
+import AuthButton from '../authButton'
 
 const AppBar = () => {
+  const { user, isAuthenticated } = useAuth0()
+
   return (
     <Grid2 container spacing={2}>
       <Grid2 item xs={4}>
         <Typography variant='h7' component='h1'>
-          Welcome, User 👋
+          Welcome, {isAuthenticated ? user.name : 'User'} 👋
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
@@ -35,7 +38,7 @@ const AppBar = () => {
           display: 'flex',
           justifyContent: 'flex-end',
         }}>
-        <SignInButton />
+        <AuthButton />
       </Grid2>
     </Grid2>
   )

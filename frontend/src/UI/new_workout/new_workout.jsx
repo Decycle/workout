@@ -27,7 +27,7 @@ import {
   Button,
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
-import SignInButton from '../signInButton'
+import AuthButton from '../authButton'
 import { useCallback } from 'react'
 
 const AppBar = () => {
@@ -50,7 +50,7 @@ const AppBar = () => {
           display: 'flex',
           justifyContent: 'flex-end',
         }}>
-        <SignInButton />
+        <AuthButton />
       </Grid2>
     </Grid2>
   )

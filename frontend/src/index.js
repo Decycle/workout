@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Auth0Provider } from '@auth0/auth0-react'
 import './index.css'
 import App from './UI/App'
 import reportWebVitals from './reportWebVitals'
@@ -32,12 +33,19 @@ const root = ReactDOM.createRoot(
 )
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <Auth0Provider
+      domain='decycle.us.auth0.com'
+      clientId='xWovAgPiKvlIkrntto5ZGoHRZNRZNgDc'
+      authorizationParams={{
+        redirect_uri: 'http://localhost:3000/app/home',
+      }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </Auth0Provider>
   </React.StrictMode>
 )
 
