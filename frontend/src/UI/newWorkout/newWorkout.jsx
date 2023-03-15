@@ -36,10 +36,7 @@ import {
 import AuthButton from '../authButton'
 import { useCallback } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import {
-  DesktopDateTimePicker,
-  StaticDateTimePicker,
-} from '@mui/x-date-pickers'
+import { DesktopDateTimePicker } from '@mui/x-date-pickers'
 
 const AppBar = () => {
   return (

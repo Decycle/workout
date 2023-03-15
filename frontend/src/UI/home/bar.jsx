@@ -16,21 +16,31 @@ const labels = [
   'December',
 ]
 
-const BarChart = () => {
+const BarChart = ({ input }) => {
+  // console.log(input)
+
   const data = {
-    labels: labels,
+    labels: input.labels,
     datasets: [
       {
         label: 'Workout',
-        data: labels.map(() => faker.datatype.number(100)),
+        data: input.data,
         backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'transparent',
       },
     ],
   }
 
-  const options = {}
-
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+  }
   return (
     <div>
       <Bar data={data} options={options} />

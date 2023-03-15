@@ -8,6 +8,7 @@ import {
   CardContent,
   Fab,
 } from '@mui/material'
+import dayjs from 'dayjs'
 
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -51,10 +52,11 @@ const HomePage = () => {
     useAuth0()
 
   const [userWorkouts, setUserWorkouts] = useState([])
+  const [parsedWorkout, setParsedWorkout] = useState({})
 
   const fetchWorkouts = async () => {
     const accessToken = await getAccessTokenSilently()
-    const res = await fetch(
+    const response = await fetch(
       `http://localhost:8000/api/get-workouts?user=${encodeURIComponent(
         user.sub
       )}`,
@@ -64,9 +66,7 @@ const HomePage = () => {
         },
       }
     )
-
-    const data = await res.json()
-    console.log(accessToken)
+    const data = await response.json()
     setUserWorkouts(data)
   }
 
@@ -75,6 +75,50 @@ const HomePage = () => {
       fetchWorkouts()
     }
   }, [isAuthenticated])
+
+  const parseWorkout = (workouts) => {
+    const today = dayjs()
+
+    const labels = new Array(7).fill(0).map((_, i) => {
+      return today.subtract(i, 'day').format('ddd')
+    })
+
+    const data = labels.map((_, i) => {
+      const date = today
+        .subtract(i, 'day')
+        .format('YYYY-MM-DD')
+
+      const filteredWorkouts = workouts.filter(
+        (workout) => {
+          return (
+            dayjs(workout['start_time'] * 1000).format(
+              'YYYY-MM-DD'
+            ) === date
+          )
+        }
+      )
+      for (let workout of workouts) {
+        console.log(workout['start_time'])
+      }
+
+      console.log('workouts', workouts)
+      console.log('filteredWorkouts', filteredWorkouts)
+      return filteredWorkouts.length
+    })
+
+    console.log(data)
+
+    setParsedWorkout({
+      labels: labels.reverse(),
+      data: data.reverse(),
+    })
+  }
+
+  useEffect(() => {
+    if (userWorkouts.length > 0) {
+      parseWorkout(userWorkouts)
+    }
+  }, [userWorkouts])
 
   return (
     <Box
@@ -87,7 +131,9 @@ const HomePage = () => {
       }}>
       <AppBar />
       <Box sx={{ maxWidth: 600 }}>
-        <BarChart />
+        {userWorkouts.length !== 0 && (
+          <BarChart input={parsedWorkout} />
+        )}
       </Box>
       <Box
         sx={{

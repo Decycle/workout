@@ -102,12 +102,11 @@ def add_workout(user: str, name: str, start: int, end: int,  token: str = Depend
     return result
 
 @app.get("/api/get-workouts")
-def get_workouts(user: str, token: str = Depends(token_auth_scheme)):
+def get_workouts(user: str):
     """A valid access token is required to access this route"""
 
-    result = token.credentials
-    workouts = collection.find({"user": user})
-    print(result)
-    for doc in workouts:
-        print(doc)
-    return list(workouts)
+    # result = token.credentials
+    workouts = list(collection.find({"user": user}))
+    for workout in workouts:
+        workout['_id'] = str(workout['_id'])
+    return workouts
