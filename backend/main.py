@@ -16,7 +16,6 @@ if ENV_FILE:
 else:
     print("Please provide a .env file. See README.md for more information.")
 
-
 mongo_password = env.get("MONGO_PASSWORD")
 client = pymongo.MongoClient(f"mongodb+srv://decycleyang:{mongo_password}@cluster0.mtpybkd.mongodb.net/?retryWrites=true&w=majority")
 db = client["User-Workouts"]
@@ -37,7 +36,6 @@ pinecone.init(
     environment="us-east-1-aws"
 )
 index = pinecone.Index('workout')
-
 
 token_auth_scheme = HTTPBearer()
 # Creates app instance
@@ -87,7 +85,6 @@ async def search(prompt: str):
     print(response)
     return response
 
-
 @app.get("/api/add-workout")
 def add_workout(user: str, name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
@@ -110,3 +107,23 @@ def get_workouts(user: str):
     for workout in workouts:
         workout['_id'] = str(workout['_id'])
     return workouts
+
+@app.get("/api/query-workouts")
+def query_workouts(user: str, start: int, end: int):
+    """A valid access token is required to access this route"""
+
+    workouts = list(collection.find({
+        "user": user,
+        "start_time": {"$gte": start},
+        "end_time": {"$lte": end}
+    }))
+    for workout in workouts:
+        workout['_id'] = str(workout['_id'])
+    return workouts
+
+@app.delete("/api/delete-workout/{id}")
+def delete_workout(user: str):
+    """A valid access token is required to access this route"""
+
+    collection.delete_one({"_id": ObjectId(user)})
+
