@@ -22,10 +22,11 @@ Welcome to our project! This is a short guide to get you started with the instal
 
 Note: If you are on a windows machine, you might have to change the ExecutionPolicy in order to run the script
 1. Run a new Powershell terminal as administrator
-2. Set the ExecutionPolicy to true by running the command `Set-ExecutionPolicy RemoteSigned –Scope Process`.
-3. Activate the virtual environment by running the command `venv\Scripts\Activate.ps1`.
-4. Install the required Python packages by running the command `pip install -r requirements.txt`.
-5. Finally, start the server by running the command `uvicorn main:app --reload`.
+2. Set the ExecutionPolicy to true by running the command `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force`.
+3. Create a new Python virtual environment by running the command `python -m venv venv`.
+4. Activate the virtual environment by running the command `venv\Scripts\Activate.ps1`.
+5. Install the required Python packages by running the command `pip install -r requirements.txt`.
+6. Finally, start the server by running the command `uvicorn main:app --reload`.
 
 And that's it! You should now be ready to start using our project.
 
