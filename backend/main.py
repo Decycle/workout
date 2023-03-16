@@ -17,7 +17,7 @@ if ENV_FILE:
 else:
     print("Please provide a .env file. See README.md for more information.")
 
-mongo_password = env.get("MONGO_PASSWORD")
+mongo_password = "drTzWD84dYRkGlZR"
 client = pymongo.MongoClient(f"mongodb+srv://decycleyang:{mongo_password}@cluster0.mtpybkd.mongodb.net/?retryWrites=true&w=majority")
 db = client["User-Workouts"]
 collection = db["workouts"]
