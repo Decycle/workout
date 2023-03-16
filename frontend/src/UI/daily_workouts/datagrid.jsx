@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
 import { DataGrid } from '@mui/x-data-grid';
 import { Add, Search } from '@mui/icons-material'
 import {
@@ -16,7 +14,11 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 
 const rows = [];
 
-  const columns = [];
+const columns = [ 
+    {field: 'workout', headerName: 'Workout', width: 200}, 
+    {field: 'start', headerName: 'Start time', flex: .5}, 
+    {field: 'end', headerName: 'End time', flex: .5}, 
+    {field: 'workout_info', headerName: 'Workout Instructions', flex: 1} ];
 
   const DataGridTable = () => {
     const addRow = () => { console.log("Add exercise") /* Add exercise */ };

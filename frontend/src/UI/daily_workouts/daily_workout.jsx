@@ -18,24 +18,28 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 import AuthButton from '../authButton'
 
+const today = new Date()
+  let date = (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getFullYear()
+  let time = Math.floor(new Date(today.getFullYear()+'.'+(today.getMonth()+1)+'.'+today.getDate()).getTime() / 1000)
+
 const AppBar = () => {
   const { user, isAuthenticated } = useAuth0()
 
   return (
     <Grid2 container spacing={2}>
-      <Grid2 item xs={4}>
+      <Grid2 item xs={6}>
         <Typography variant='h7' component='h1'>
           Welcome, {isAuthenticated ? user.name : 'User'} 👋
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Here is your fitness history.
+          {isAuthenticated ? 'Here is your workout schedule for ' + date : 'View your workout plan for the day.' }
         </Typography>
       </Grid2>
 
       <Grid2
         item
-        xs={8}
+        xs={6}
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
@@ -76,6 +80,8 @@ const DailyWorkoutPage = () => {
     }
   }, [isAuthenticated])
 
+  console.log(userWorkouts)
+
   return (
       <Box
         component='main'
@@ -91,7 +97,13 @@ const DailyWorkoutPage = () => {
         flexDirection: 'column',
         gap: 4,
         }}>
+        {isAuthenticated ? (
           <DataGridTable />
+        ) : (
+          <Typography variant='h5'>
+            Please login first to view your workout schedule.
+          </Typography>
+        )}
         </Box>
       </Box>
     )
