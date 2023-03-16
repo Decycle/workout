@@ -1,6 +1,7 @@
 import {
   Add,
   CalendarMonth,
+  CalendarToday,
   FitnessCenter,
   Home,
   Search,
@@ -32,6 +33,8 @@ import {
 
 import HomePage from './home/home'
 import NewWorkOutPage from './newWorkout/newWorkout'
+import CalendarPage from './daily_workouts/daily_workout'
+import DailyWorkoutPage from './daily_workouts/daily_workout'
 
 const drawerWidth = 200
 
@@ -73,13 +76,24 @@ const DrawerLeft = () => {
             <ListItemText primary={'Workout'} />
           </ListItemButton>
         </ListItem>
-
+      
         <ListItem key={'Calender'}>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => navigate('/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
             <ListItemText primary={'Calender'} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem key={'Daily_Workout'}>
+          <ListItemButton
+            onClick={() => navigate('/daily-workout')}>
+            <ListItemIcon>
+              <CalendarToday />
+            </ListItemIcon>
+            <ListItemText primary={'Today\'s Workout'} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -109,6 +123,16 @@ function App() {
           path='/app/new-workout'
           exact
           element={<NewWorkOutPage />}
+        />
+        {/* <Route
+          path='/calendar'
+          exact
+          element={<CalendarPage />}
+        /> */}
+        <Route
+          path='/daily-workout'
+          exact
+          element={<DailyWorkoutPage />}
         />
       </Routes>
     </Box>
