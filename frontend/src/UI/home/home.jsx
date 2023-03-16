@@ -143,7 +143,7 @@ const HomePage = () => {
         }}>
         <Fab
           color='primary'
-          onClick={() => navigate('/new-workout')}>
+          onClick={() => navigate('/app/new-workout')}>
           <Add />
         </Fab>
       </Box>

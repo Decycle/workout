@@ -10,8 +10,6 @@ import {
     Fab,
   } from '@mui/material'
 
-import Grid2 from '@mui/material/Unstable_Grid2';
-
 const rows = [];
 
 const columns = [ 
@@ -20,8 +18,8 @@ const columns = [
     {field: 'end', headerName: 'End time', flex: .5}, 
     {field: 'workout_info', headerName: 'Workout Instructions', flex: 1} ];
 
-  const DataGridTable = () => {
-    const addRow = () => { console.log("Add exercise") /* Add exercise */ };
+  const DataGridTable = ({data, navigate}) => {
+    console.log(data)
 
     return (
         <div style={{height: 300, width: '75%'}}>
@@ -32,20 +30,18 @@ const columns = [
                     },
                 },
             }} />
-            <Grid2
-                container
-                spacing={0}
-            >
-                <Grid2 xs 
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <Fab color='primary'>
-                        <Add onClick={addRow()}/>
-                    </Fab>
-                </Grid2>
-            </Grid2>
+            <Box
+            sx={{
+            position: 'fixed',
+            bottom: 32,
+            right: 32,
+            }}>
+                <Fab
+                    color='primary'
+                    onClick={() => navigate('/app/new-workout')}>
+                    <Add />
+                </Fab>
+            </Box>
         </div>
     )
   }

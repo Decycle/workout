@@ -80,7 +80,7 @@ const DailyWorkoutPage = () => {
     }
   }, [isAuthenticated])
 
-  console.log(userWorkouts)
+  // console.log(userWorkouts)
 
   return (
       <Box
@@ -98,7 +98,7 @@ const DailyWorkoutPage = () => {
         gap: 4,
         }}>
         {isAuthenticated ? (
-          <DataGridTable />
+          <DataGridTable data = {userWorkouts} navigate = {navigate}/>
         ) : (
           <Typography variant='h5'>
             Please login first to view your workout schedule.
