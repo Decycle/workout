@@ -9,6 +9,7 @@ import openai
 
 from datetime import datetime
 import pymongo
+from bson.objectid import ObjectId
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -114,16 +115,22 @@ def query_workouts(user: str, start: int, end: int):
 
     workouts = list(collection.find({
         "user": user,
-        "start_time": {"$gte": start},
-        "end_time": {"$lte": end}
+        "start_time": {"$gte": start, "$lte": end},
     }))
     for workout in workouts:
         workout['_id'] = str(workout['_id'])
     return workouts
 
-@app.delete("/api/delete-workout/{id}")
-def delete_workout(user: str):
+@app.delete("/api/delete-workout")
+def delete_workout(id: str):
     """A valid access token is required to access this route"""
+    obj_id = ObjectId(id)
+    # delete the document with the specified id
+    result = collection.delete_one({"_id": obj_id})
 
-    collection.delete_one({"_id": ObjectId(user)})
+    # check if the document was deleted successfully
+    if result.deleted_count == 1:
+        return {"message": "Workout deleted successfully"}
+    else:
+        return {"message": "Workout not found"}
 
