@@ -18,7 +18,7 @@ Welcome to our project! This is a short guide to get you started with the instal
 2. Create a new Python virtual environment by running the command `python -m venv venv`.
 3. Activate the virtual environment by running the command `source venv/bin/activate`.
 4. Install the required Python packages by running the command `pip install -r requirements.txt`.
-5. Finally, start the server by running the command python `server.py`.
+5. Finally, start the server by running the command python `uvicorn main:app --reload`.
 
 Note: If you are on a windows machine, you might have to change the ExecutionPolicy in order to run the script
 

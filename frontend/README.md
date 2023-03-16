@@ -16,3 +16,7 @@ Create, manage, and track different exercise and workout routines with ease.
 
 WIP
 
+## Installation
+npm install
+npm start
+
