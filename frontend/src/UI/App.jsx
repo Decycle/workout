@@ -1,32 +1,23 @@
 import {
-  Add,
   CalendarMonth,
   FitnessCenter,
   Home,
-  Search,
 } from '@mui/icons-material'
 import {
   Box,
-  Container,
   Drawer,
-  InputAdornment,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  TextField,
-  Typography,
 } from '@mui/material'
 
-import Grid2 from '@mui/material/Unstable_Grid2'
-import { useState } from 'react'
 import {
   Route,
   Routes,
   Navigate,
   useNavigate,
-  redirect,
 } from 'react-router-dom'
 
 import HomePage from './home/home'

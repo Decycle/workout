@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 import {
   Calendar,
   dayjsLocalizer,
@@ -181,7 +185,7 @@ const Calender = () => {
   const [openView, setOpenView] = useState(false)
   const [workoutData, setWorkoutData] = useState({})
 
-  const fetchWorkouts = async () => {
+  const fetchWorkouts = useCallback(async () => {
     console.log(new Date(time.start))
     console.log(new Date(time.end))
 
@@ -207,7 +211,7 @@ const Calender = () => {
 
     setIsLoading(false)
     setEvents(events)
-  }
+  }, [time, user.sub])
 
   const handleSelect = async (event) => {
     console.log(event)
@@ -243,7 +247,7 @@ const Calender = () => {
     if (isAuthenticated) {
       fetchWorkouts()
     }
-  }, [isAuthenticated, time])
+  }, [fetchWorkouts, isAuthenticated, time])
 
   const onNavigate = (date, view) => {
     let start_time = new Date(date)
@@ -284,12 +288,7 @@ const Calender = () => {
     })
   }
 
-  const eventStyleGetter = (
-    event,
-    start,
-    end,
-    isSelected
-  ) => {
+  const eventStyleGetter = () => {
     return {
       className: 'event',
       style: {
