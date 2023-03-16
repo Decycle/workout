@@ -88,8 +88,7 @@ async def search(prompt: str):
     print(response)
     return response
 
-@app.get("/api/get-description")
-async def get_description(name: str):
+def name_to_data(name):
     embedding = list(np.zeros(1536))
     response = index.query(
       vector=embedding,
@@ -101,9 +100,12 @@ async def get_description(name: str):
       }
     )
     response = response['matches'][0]['metadata']
-
-    print(response)
     return response
+
+@app.get("/api/get-description")
+async def get_description(name: str):
+    data = name_to_data(name)
+    return data
 
 
 @app.get("/api/add-workout")
@@ -139,6 +141,24 @@ def query_workouts(user: str, start: int, end: int):
     }))
     for workout in workouts:
         workout['_id'] = str(workout['_id'])
+    return workouts
+
+@app.get("/api/query-workouts-data")
+def query_workouts_data(user: str, start: int, end: int):
+    """A valid access token is required to access this route"""
+    workouts = list(collection.find({
+        "user": user,
+        "start_time": {"$gte": start, "$lte": end},
+    }))
+
+
+    for workout in workouts:
+        workout['_id'] = str(workout['_id'])
+        data = name_to_data(workout['workout_name'])
+        for key, value in data.items():
+            workout[key] = value
+
+    print(workouts)
     return workouts
 
 @app.delete("/api/delete-workout")

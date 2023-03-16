@@ -55,7 +55,7 @@ const AppBar = () => {
 }
 
 const ViewWorkoutPage = ({
-  open,
+  openView,
   closeFunc,
   data,
   refreshFunc,
@@ -79,7 +79,7 @@ const ViewWorkoutPage = ({
   }
 
   return (
-    <Dialog open={open} onClose={closeFunc}>
+    <Dialog openView={openView} onClose={closeFunc}>
       <DialogTitle sx={{ m: 0, pb: 3 }} variant='h5'>
         {data.name}
       </DialogTitle>
@@ -159,7 +159,9 @@ const Calender = () => {
 
   const [time, setTime] = useState(getDefaultTime())
   const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [openCreate, setOpenCreate] = useState(false)
+  const [createTime, setCreateTime] = useState(Date.now())
+  const [openView, setOpenView] = useState(false)
   const [workoutData, setWorkoutData] = useState({})
 
   const fetchWorkouts = async () => {
@@ -212,7 +214,12 @@ const Calender = () => {
 
     setIsLoading(false)
     setWorkoutData(data)
-    setOpen(true)
+    setOpenView(true)
+  }
+
+  const handleCreate = (event) => {
+    setCreateTime(event.start)
+    setOpenCreate(true)
   }
 
   useEffect(() => {
@@ -275,10 +282,6 @@ const Calender = () => {
     }
   }
 
-  const eventContentGetter = (event) => {
-    return <div>{event.title}</div>
-  }
-
   return (
     <div>
       {isAuthenticated && (
@@ -289,7 +292,7 @@ const Calender = () => {
                 color: '#fff',
                 zIndex: (theme) => theme.zIndex.drawer + 1,
               }}
-              open={true}>
+              openView={true}>
               <CircularProgress color='inherit' />
             </Backdrop>
           )}
@@ -302,15 +305,13 @@ const Calender = () => {
             selectable
             onNavigate={onNavigate}
             onSelectEvent={handleSelect}
+            onSelectSlot={handleCreate}
             style={{ height: 500, margin: '50px' }}
-            components={{
-              event: eventContentGetter,
-            }}
           />
           {workoutData && (
             <ViewWorkoutPage
-              open={open}
-              closeFunc={() => setOpen(false)}
+              openView={openView}
+              closeFunc={() => setOpenView(false)}
               data={workoutData}
               refreshFunc={fetchWorkouts}
             />

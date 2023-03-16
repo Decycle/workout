@@ -1,5 +1,4 @@
 import { Bar } from 'react-chartjs-2'
-import { faker } from '@faker-js/faker'
 
 const labels = [
   'January',
