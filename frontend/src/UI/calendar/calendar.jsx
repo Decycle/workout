@@ -6,8 +6,6 @@ import {
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useAuth0 } from '@auth0/auth0-react'
 import dayjs from 'dayjs'
-// import Typography from '@mui/material'
-// import Box from '@mui/material'
 import {
   Box,
   Typography,
@@ -18,13 +16,11 @@ import {
   Backdrop,
   CircularProgress,
 } from '@mui/material'
+import { Close, DeleteForever } from '@mui/icons-material'
 import Grid2 from '@mui/material/Unstable_Grid2'
+
 import AuthButton from '../authButton'
-import {
-  Close,
-  Delete,
-  DeleteForever,
-} from '@mui/icons-material'
+import WorkoutSearchBar from '../newWorkout/workoutSearchBar'
 
 const localizer = dayjsLocalizer(dayjs)
 
@@ -55,7 +51,7 @@ const AppBar = () => {
 }
 
 const ViewWorkoutPage = ({
-  openView,
+  open,
   closeFunc,
   data,
   refreshFunc,
@@ -79,7 +75,7 @@ const ViewWorkoutPage = ({
   }
 
   return (
-    <Dialog openView={openView} onClose={closeFunc}>
+    <Dialog open={open} onClose={closeFunc}>
       <DialogTitle sx={{ m: 0, pb: 3 }} variant='h5'>
         {data.name}
       </DialogTitle>
@@ -135,6 +131,27 @@ const ViewWorkoutPage = ({
         onClick={deleteWorkout}>
         <DeleteForever />
       </IconButton>
+    </Dialog>
+  )
+}
+
+const CreateWorkoutPage = ({
+  open,
+  closeFunc,
+  defaultTime,
+  refreshFunc,
+}) => {
+  return (
+    <Dialog open={open} onClose={closeFunc}>
+      <Box
+        sx={{
+          p: 3,
+        }}>
+        <WorkoutSearchBar
+          defaultTime={defaultTime}
+          refreshFunc={refreshFunc}
+        />
+      </Box>
     </Dialog>
   )
 }
@@ -292,7 +309,7 @@ const Calender = () => {
                 color: '#fff',
                 zIndex: (theme) => theme.zIndex.drawer + 1,
               }}
-              openView={true}>
+              open={true}>
               <CircularProgress color='inherit' />
             </Backdrop>
           )}
@@ -310,12 +327,18 @@ const Calender = () => {
           />
           {workoutData && (
             <ViewWorkoutPage
-              openView={openView}
+              open={openView}
               closeFunc={() => setOpenView(false)}
               data={workoutData}
               refreshFunc={fetchWorkouts}
             />
           )}
+          <CreateWorkoutPage
+            open={openCreate}
+            closeFunc={() => setOpenCreate(false)}
+            defaultTime={createTime}
+            refreshFunc={fetchWorkouts}
+          />
         </div>
       )}
     </div>

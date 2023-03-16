@@ -67,7 +67,7 @@ const ListView = ({
   )
 }
 
-const NewWorkoutForm = () => {
+const WorkoutSearchBar = ({ defaultTime, refreshFunc }) => {
   const [search, setSearch] = useState('')
   const [workoutData, setWorkoutData] = useState([])
 
@@ -186,10 +186,12 @@ const NewWorkoutForm = () => {
           open={openPage}
           closeFunc={() => setOpenPage(false)}
           data={currentWorkoutData}
+          defaultTime={defaultTime}
+          refreshFunc={refreshFunc}
         />
       )}
     </Box>
   )
 }
 
-export default NewWorkoutForm
+export default WorkoutSearchBar

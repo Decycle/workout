@@ -13,10 +13,18 @@ import {
 import { useAuth0 } from '@auth0/auth0-react'
 import { DesktopDateTimePicker } from '@mui/x-date-pickers'
 
-const AddWorkoutPage = ({ open, closeFunc, data }) => {
+const AddWorkoutPage = ({
+  open,
+  closeFunc,
+  data,
+  defaultTime,
+  refreshFunc,
+}) => {
   const { user, getAccessTokenSilently } = useAuth0()
 
-  const [startTime, setStartTime] = useState(dayjs())
+  const [startTime, setStartTime] = useState(
+    defaultTime ? dayjs(defaultTime) : dayjs()
+  )
   const [duration, setDuration] = useState(20)
 
   const addExercise = async (name) => {
@@ -48,6 +56,7 @@ const AddWorkoutPage = ({ open, closeFunc, data }) => {
     console.log(name)
     console.log(data)
 
+    refreshFunc()
     closeFunc()
   }
 
