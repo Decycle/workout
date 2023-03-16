@@ -7,7 +7,6 @@ import {
 } from '@mui/icons-material'
 import {
   Box,
-  CircularProgress,
   Container,
   Drawer,
   InputAdornment,
@@ -112,7 +111,11 @@ function App() {
           exact
           element={<NewWorkOutPage />}
         />
-        <Route path ='/calendar' exact element={<CalendarPage />} />
+        <Route
+          path='/calendar'
+          exact
+          element={<CalendarPage />}
+        />
       </Routes>
     </Box>
   )

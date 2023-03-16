@@ -11,6 +11,8 @@ from datetime import datetime
 import pymongo
 from bson.objectid import ObjectId
 
+import numpy as np
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -85,6 +87,24 @@ async def search(prompt: str):
 
     print(response)
     return response
+
+@app.get("/api/get-description")
+async def get_description(name: str):
+    embedding = list(np.zeros(1536))
+    response = index.query(
+      vector=embedding,
+      top_k=1,
+      include_values=False,
+      include_metadata=True,
+      filter={
+          "name": name
+      }
+    )
+    response = response['matches'][0]['metadata']
+
+    print(response)
+    return response
+
 
 @app.get("/api/add-workout")
 def add_workout(user: str, name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
