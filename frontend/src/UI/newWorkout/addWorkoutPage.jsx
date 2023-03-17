@@ -51,8 +51,6 @@ const AddWorkoutPage = ({
     )
 
     const data = await response.json()
-    console.log(name)
-    console.log(data)
 
     refreshFunc && refreshFunc()
     closeFunc()

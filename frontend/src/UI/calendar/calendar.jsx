@@ -138,15 +138,12 @@ const Calender = () => {
   }, [fetchWorkouts, isAuthenticated, time])
 
   const onRangeChange = (event) => {
-    console.log('event', event)
-
     if ('start' in event && 'end' in event) {
       setTime({
         start: event.start.getTime(),
         end: event.end.getTime(),
       })
     } else if (Array.isArray(event)) {
-      console.log(event.length)
       if (event.length > 1) {
         setTime({
           start: event[0].getTime(),

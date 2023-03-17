@@ -80,7 +80,6 @@ const Charts = ({ workouts }) => {
   }
 
   const parsePieData = (labels, category) => (workouts) => {
-    console.log(workouts)
     const data = labels.map((label) => {
       return workouts.filter(
         (workout) => workout[category] === label

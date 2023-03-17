@@ -78,7 +78,6 @@ const WorkoutSearchBar = ({ defaultTime, refreshFunc }) => {
   const [openPage, setOpenPage] = useState(false)
 
   const searchExercise = useCallback(async (prompt) => {
-    console.log(prompt)
     setIsLoading(true)
 
     const response = await fetch(
@@ -95,7 +94,6 @@ const WorkoutSearchBar = ({ defaultTime, refreshFunc }) => {
     const data = await response.json()
     setIsLoading(false)
     setWorkoutData(data)
-    console.log(data)
   }, [])
 
   const sampleSearch = [
@@ -160,7 +158,6 @@ const WorkoutSearchBar = ({ defaultTime, refreshFunc }) => {
                 variant='outlined'
                 size='small'
                 onClick={() => {
-                  console.log(data)
                   setSearch(data)
                   searchExercise(data)
                 }}>

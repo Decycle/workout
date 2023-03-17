@@ -17,8 +17,6 @@ const ViewWorkoutPage = ({
 }) => {
   const { getAccessTokenSilently } = useAuth0()
 
-  console.log(data)
-
   const deleteWorkout = async () => {
     const token = await getAccessTokenSilently()
     const response = await fetch(
@@ -34,7 +32,6 @@ const ViewWorkoutPage = ({
       }
     )
     const res = await response.json()
-    console.log(res)
     refreshFunc()
     closeFunc()
   }

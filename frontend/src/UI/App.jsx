@@ -4,6 +4,7 @@ import {
   CalendarToday,
   FitnessCenter,
   Home,
+  LibraryBooks,
 } from '@mui/icons-material'
 import {
   Box,
@@ -84,7 +85,7 @@ const DrawerLeft = () => {
               navigate('/app/workout-archives')
             }>
             <ListItemIcon>
-              <CalendarToday />
+              <LibraryBooks />
             </ListItemIcon>
             <ListItemText primary={'Workout Archives'} />
           </ListItemButton>

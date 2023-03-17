@@ -62,8 +62,6 @@ const DataGridTable = ({ data, refreshFunc }) => {
     data['end_time'] = event.end * 1000
     data['id'] = event.id
 
-    console.log('EVENT', event)
-    console.log('DATA', data)
     setIsLoading(false)
     setWorkoutData(data)
     setOpenView(true)
