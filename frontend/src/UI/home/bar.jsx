@@ -1,7 +1,7 @@
 import { Bar } from 'react-chartjs-2'
 
 const BarChart = ({ input }) => {
-  // console.log(input)
+  console.log(input)
 
   const data = {
     labels: input.labels,

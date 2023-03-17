@@ -47,6 +47,8 @@ const HomePage = () => {
       return today.subtract(i, 'day').format('ddd')
     })
 
+    console.log(labels)
+
     const data = labels.map((_, i) => {
       const date = today
         .subtract(i, 'day')

@@ -1,5 +1,6 @@
 import {
   CalendarMonth,
+  CalendarToday,
   FitnessCenter,
   Home,
 } from '@mui/icons-material'
@@ -23,6 +24,7 @@ import {
 import HomePage from './home/home'
 import NewWorkOutPage from './newWorkout/newWorkout'
 import CalendarPage from './calendar/calendar'
+import DailyWorkoutPage from './daily_workouts/daily_workout'
 
 const drawerWidth = 200
 
@@ -64,14 +66,23 @@ const DrawerLeft = () => {
             <ListItemText primary={'Workout'} />
           </ListItemButton>
         </ListItem>
-
-        <ListItem key={'Calender'}>
+        <ListItem key={'Calendar'}>
           <ListItemButton
             onClick={() => navigate('/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
-            <ListItemText primary={'Calender'} />
+            <ListItemText primary={'Calendar'} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem key={'Daily_Workout'}>
+          <ListItemButton
+            onClick={() => navigate('/daily-workout')}>
+            <ListItemIcon>
+              <CalendarToday />
+            </ListItemIcon>
+            <ListItemText primary={'Today\'s Workout'} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -101,6 +112,11 @@ function App() {
           path='/app/new-workout'
           exact
           element={<NewWorkOutPage />}
+        />
+        <Route
+          path='/daily-workout'
+          exact
+          element={<DailyWorkoutPage />}
         />
         <Route
           path='/calendar'
