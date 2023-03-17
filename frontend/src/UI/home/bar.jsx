@@ -17,7 +17,7 @@ const labels = [
 ]
 
 const BarChart = ({ input }) => {
-  // console.log(input)
+  console.log(input)
 
   const data = {
     labels: input.labels,

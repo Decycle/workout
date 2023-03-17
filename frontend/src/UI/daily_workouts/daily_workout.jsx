@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import DataGridTable from './datagrid'
+import dayjs from 'dayjs'
 
 import { useEffect, useState } from 'react'
 
@@ -82,6 +83,39 @@ const DailyWorkoutPage = () => {
 
   // console.log(userWorkouts)
 
+  const parseWorkout = (workouts) => {
+    const today = dayjs()
+
+    const date = today
+        .format('YYYY-MM-DD')
+
+    const filteredWorkouts = workouts.filter(
+      (workout) => {
+        return (
+          dayjs(workout['start_time'] * 1000).format(
+            'YYYY-MM-DD'
+          ) === date
+        )
+      }
+    )
+
+    // for (let workout of workouts) {
+    //   console.log(workout['start_time'])
+    // }
+
+    // console.log('workouts', workouts)
+    // console.log('filteredWorkouts', filteredWorkouts)
+    
+
+    setParsedWorkout(filteredWorkouts)
+  }
+
+  useEffect(() => {
+    if (userWorkouts.length > 0) {
+      parseWorkout(userWorkouts)
+    }
+  }, [userWorkouts])
+
   return (
       <Box
         component='main'
@@ -98,7 +132,7 @@ const DailyWorkoutPage = () => {
         gap: 4,
         }}>
         {isAuthenticated ? (
-          <DataGridTable data = {userWorkouts} navigate = {navigate}/>
+          <DataGridTable data = {parsedWorkout} navigate = {navigate}/>
         ) : (
           <Typography variant='h5'>
             Please login first to view your workout schedule.

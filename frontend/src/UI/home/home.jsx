@@ -23,19 +23,19 @@ const AppBar = () => {
 
   return (
     <Grid2 container spacing={2}>
-      <Grid2 item xs={4}>
+      <Grid2 item xs={6}>
         <Typography variant='h7' component='h1'>
           Welcome, {isAuthenticated ? user.name : 'User'} 👋
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Here is your fitness history.
+          Here is your fitness history for the past week.
         </Typography>
       </Grid2>
 
       <Grid2
         item
-        xs={8}
+        xs={6}
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
@@ -82,6 +82,8 @@ const HomePage = () => {
     const labels = new Array(7).fill(0).map((_, i) => {
       return today.subtract(i, 'day').format('ddd')
     })
+
+    console.log(labels)
 
     const data = labels.map((_, i) => {
       const date = today
