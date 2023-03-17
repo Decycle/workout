@@ -1,8 +1,4 @@
-import {
-  Box,
-  Typography,
-
-} from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import { useAuth0 } from '@auth0/auth0-react'
 
@@ -18,7 +14,7 @@ const AppBar = () => {
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Create a new workout. 💪
+          Create a new workout 💪
         </Typography>
       </Grid2>
 
@@ -52,7 +48,7 @@ const NewWorkOutPage = () => {
         <WorkoutSearchBar />
       ) : (
         <Typography variant='h5'>
-          Please login first to add a workout
+          Please login to create a new workout.
         </Typography>
       )}
     </Box>

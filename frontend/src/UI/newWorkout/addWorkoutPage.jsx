@@ -56,7 +56,7 @@ const AddWorkoutPage = ({
     console.log(name)
     console.log(data)
 
-    refreshFunc()
+    refreshFunc && refreshFunc()
     closeFunc()
   }
 
