@@ -21,38 +21,10 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { Close, DeleteForever } from '@mui/icons-material'
-import Grid2 from '@mui/material/Unstable_Grid2'
-
-import AuthButton from '../authButton'
 import WorkoutSearchBar from '../newWorkout/workoutSearchBar'
+import AppBar from '../appBar'
 
 const localizer = dayjsLocalizer(dayjs)
-
-const AppBar = () => {
-  return (
-    <Grid2 container spacing={2}>
-      <Grid2 item xs={4}>
-        <Typography variant='h7' component='h1'>
-          Welcome, User 👋
-        </Typography>
-
-        <Typography variant='subtitle1' component='h1'>
-          View your calendar 📅
-        </Typography>
-      </Grid2>
-
-      <Grid2
-        item
-        xs={8}
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-        }}>
-        <AuthButton />
-      </Grid2>
-    </Grid2>
-  )
-}
 
 const ViewWorkoutPage = ({
   open,
@@ -73,6 +45,7 @@ const ViewWorkoutPage = ({
       }
     )
     const res = await response.json()
+    console.log(res)
     refreshFunc()
     closeFunc()
   }
@@ -295,7 +268,10 @@ const Calender = () => {
   return (
     <div>
       {isAuthenticated && (
-        <div>
+        <Box
+          sx={{
+            ml: -6,
+          }}>
           {isLoading && (
             <Backdrop
               sx={{
@@ -332,7 +308,7 @@ const Calender = () => {
             defaultTime={createTime}
             refreshFunc={fetchWorkouts}
           />
-        </div>
+        </Box>
       )}
     </div>
   )
@@ -350,7 +326,7 @@ const CalenderPage = () => {
         p: 5,
         ml: 2,
       }}>
-      <AppBar />
+      <AppBar message='View your calendar 📅' />
       {isAuthenticated ? (
         <Calender />
       ) : (

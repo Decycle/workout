@@ -5,38 +5,10 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
-import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
-import AuthButton from '../authButton'
 import { useCallback, useEffect, useState } from 'react'
 
-const AppBar = () => {
-  const { user, isAuthenticated } = useAuth0()
-
-  return (
-    <Grid2 container spacing={2}>
-      <Grid2 item xs={4}>
-        <Typography variant='h7' component='h1'>
-          Welcome, {isAuthenticated ? user.name : 'User'} 👋
-        </Typography>
-
-        <Typography variant='subtitle1' component='h1'>
-          Here is your fitness history 📈
-        </Typography>
-      </Grid2>
-
-      <Grid2
-        item
-        xs={8}
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-        }}>
-        <AuthButton />
-      </Grid2>
-    </Grid2>
-  )
-}
+import AppBar from '../appBar'
 
 const HomePage = () => {
   const navigate = useNavigate()
@@ -121,7 +93,7 @@ const HomePage = () => {
         p: 5,
         ml: 2,
       }}>
-      <AppBar />
+      <AppBar message='Here is your fitness history 📈' />
       {isAuthenticated ? (
         <Box sx={{ maxWidth: 600 }}>
           {userWorkouts.length !== 0 && (
