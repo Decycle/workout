@@ -103,7 +103,7 @@ const Charts = ({ workouts }) => {
         <Typography variant='h5'>Past Workouts</Typography>
         <BarChart input={parseBarData(workouts)} />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={5} sx={{ ml: 4 }}>
         <Typography variant='h5'>Difficulties</Typography>
         <PieChart
           input={parsePieData(
@@ -112,7 +112,7 @@ const Charts = ({ workouts }) => {
           )(workouts)}
         />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={5} sx={{ mt: 4 }}>
         <Typography variant='h5'>Workout Types</Typography>
         <PieChart
           input={parsePieData(
@@ -121,7 +121,7 @@ const Charts = ({ workouts }) => {
           )(workouts)}
         />
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={5} sx={{ mt: 4 }}>
         <Typography variant='h5'>Muscle Groups</Typography>
         <PieChart
           input={parsePieData(
