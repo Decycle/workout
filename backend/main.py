@@ -88,20 +88,6 @@ async def search(prompt: str):
     print(response)
     return response
 
-def name_to_data(name):
-    embedding = list(np.zeros(1536))
-    response = index.query(
-      vector=embedding,
-      top_k=1,
-      include_values=False,
-      include_metadata=True,
-      filter={
-          "name": name
-      }
-    )
-    response = response['matches'][0]['metadata']
-    return response
-
 @app.get("/api/get-description")
 async def get_description(name: str):
     data = name_to_data(name)
@@ -151,14 +137,24 @@ def query_workouts_data(user: str, start: int, end: int):
         "start_time": {"$gte": start, "$lte": end},
     }))
 
-
     for workout in workouts:
         workout['_id'] = str(workout['_id'])
-        data = name_to_data(workout['workout_name'])
-        for key, value in data.items():
-            workout[key] = value
 
-    print(workouts)
+    workout_names = set([workout['workout_name'] for workout in workouts])
+    workout_descriptions = {}
+
+    result = db['workout_descriptions'].find({'name': {'$in': list(workout_names)}})
+
+    workout_descriptions = {workout['name']: workout for workout in result}
+
+    for workout in workouts:
+        if workout['workout_name'] in workout_descriptions:
+            for key, value in workout_descriptions[workout['workout_name']].items():
+                if key != '_id' and key != 'name':
+                    workout[key] = value
+        else:
+            print("ERROR: No description found for " + workout['workout_name'])
+
     return workouts
 
 @app.delete("/api/delete-workout")
