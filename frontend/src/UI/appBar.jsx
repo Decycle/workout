@@ -9,7 +9,7 @@ const AppBar = ({ message }) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <Typography variant='h7' component='h1'>
           Welcome, {isAuthenticated ? user.name : 'User'} 👋
         </Typography>
@@ -21,7 +21,7 @@ const AppBar = ({ message }) => {
 
       <Grid
         item
-        xs={8}
+        xs={6}
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',

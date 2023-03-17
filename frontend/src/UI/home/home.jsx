@@ -9,6 +9,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import BarChart from './bar'
 import PieChart from './pie'
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import Grid from '@mui/material/Unstable_Grid2'
 
@@ -139,8 +140,10 @@ const HomePage = () => {
     useAuth0()
 
   const [userWorkouts, setUserWorkouts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchWorkouts = useCallback(async () => {
+    setIsLoading(true)
     const accessToken = await getAccessTokenSilently()
     const response = await fetch(
       `http://localhost:8000/api/get-workouts-data?user=${encodeURIComponent(
@@ -153,6 +156,7 @@ const HomePage = () => {
       }
     )
     const data = await response.json()
+    setIsLoading(false)
     setUserWorkouts(data)
   }, [getAccessTokenSilently, user])
 
@@ -173,14 +177,32 @@ const HomePage = () => {
       }}>
       <AppBar message='Here is your fitness history 📈' />
       {isAuthenticated ? (
-        userWorkouts.length !== 0 ? (
-          <Charts workouts={userWorkouts} />
-        ) : (
+        isLoading ? (
           <CircularProgress
             sx={{
               margin: 'auto',
             }}
           />
+        ) : userWorkouts.length !== 0 ? (
+          <Charts workouts={userWorkouts} />
+        ) : (
+          <Typography variant='h5'>
+            <Link
+              to='/app/new-workout'
+              style={{
+                display: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                textDecoration: 'none',
+                color: 'inherit',
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '4px',
+              }}>
+              Start your first workout!
+            </Link>
+          </Typography>
         )
       ) : (
         <Typography variant='h5'>

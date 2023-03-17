@@ -9,36 +9,7 @@ import DataGridTable from './dataGrid'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useAuth0 } from '@auth0/auth0-react'
-
-import AuthButton from '../authButton'
-
-const AppBar = () => {
-  const { user, isAuthenticated } = useAuth0()
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Typography variant='h7' component='h1'>
-          Welcome, {isAuthenticated ? user.name : 'User'} 👋
-        </Typography>
-
-        <Typography variant='subtitle1' component='h1'>
-          See your fitness archives 📚
-        </Typography>
-      </Grid>
-
-      <Grid
-        item
-        xs={6}
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-        }}>
-        <AuthButton />
-      </Grid>
-    </Grid>
-  )
-}
+import AppBar from '../appBar'
 
 const FitnessArchivePage = () => {
   const { user, getAccessTokenSilently, isAuthenticated } =
@@ -81,7 +52,7 @@ const FitnessArchivePage = () => {
         p: 5,
         ml: 2,
       }}>
-      <AppBar />
+      <AppBar message={'See your fitness archives 📚'} />
       <Box
         sx={{
           display: 'flex',
