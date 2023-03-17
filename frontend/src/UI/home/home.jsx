@@ -1,8 +1,5 @@
-import { Add } from '@mui/icons-material'
-import { Box, Typography, Fab } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import dayjs from 'dayjs'
-
-import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import BarChart from './bar'
@@ -135,7 +132,6 @@ const Charts = ({ workouts }) => {
 }
 
 const HomePage = () => {
-  const navigate = useNavigate()
   const { user, getAccessTokenSilently, isAuthenticated } =
     useAuth0()
 
@@ -187,13 +183,7 @@ const HomePage = () => {
           position: 'fixed',
           bottom: 32,
           right: 32,
-        }}>
-        <Fab
-          color='primary'
-          onClick={() => navigate('/app/new-workout')}>
-          <Add />
-        </Fab>
-      </Box>
+        }}></Box>
     </Box>
   )
 }

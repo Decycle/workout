@@ -17,7 +17,6 @@ import {
   LinearScale,
   BarElement,
   ArcElement,
-  Title,
   Tooltip,
   Legend,
 } from 'chart.js'

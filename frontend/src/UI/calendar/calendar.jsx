@@ -100,7 +100,7 @@ const Calender = () => {
 
     setIsLoading(false)
     setEvents(events)
-  }, [time, user.sub])
+  }, [time, user.sub, getAccessTokenSilently])
 
   const handleSelect = async (event) => {
     const name = event.title
@@ -169,11 +169,6 @@ const Calender = () => {
         event
       )
     }
-
-    // setTime({
-    //   start: start_time.getTime(),
-    //   end: end_time.getTime(),
-    // })
   }
 
   const eventStyleGetter = () => {

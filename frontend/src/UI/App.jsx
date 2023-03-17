@@ -1,4 +1,5 @@
 import {
+  Add,
   CalendarMonth,
   CalendarToday,
   FitnessCenter,
@@ -7,6 +8,7 @@ import {
 import {
   Box,
   Drawer,
+  Fab,
   List,
   ListItem,
   ListItemButton,
@@ -82,7 +84,7 @@ const DrawerLeft = () => {
             <ListItemIcon>
               <CalendarToday />
             </ListItemIcon>
-            <ListItemText primary={'Today\'s Workout'} />
+            <ListItemText primary={"Today's Workout"} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -90,10 +92,28 @@ const DrawerLeft = () => {
   )
 }
 
+const NavigateButton = () => {
+  const navigate = useNavigate()
+  return (
+    <Fab
+      color='primary'
+      sx={{
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        zIndex: 1,
+      }}
+      onClick={() => navigate('/app/new-workout')}>
+      <Add />
+    </Fab>
+  )
+}
+
 function App() {
   return (
     <Box sx={{ display: 'flex' }}>
       <DrawerLeft />
+      <NavigateButton />
       <Routes>
         <Route
           path='/'

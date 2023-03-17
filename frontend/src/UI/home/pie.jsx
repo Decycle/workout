@@ -24,8 +24,6 @@ const brightenColor = (color) => {
 }
 
 const PieChart = ({ input }) => {
-  console.log(input)
-
   const colorStyle = {
     backgroundColor: ['#3aa3e9', '#eec868', '#ef718c'],
     hoverBackgroundColor: ['#33adff', '#FFCE56', '#FF6384'],

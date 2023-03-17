@@ -1,12 +1,9 @@
 import {
-  Box,
   Typography,
   Dialog,
   DialogTitle,
   DialogContent,
   IconButton,
-  Backdrop,
-  CircularProgress,
 } from '@mui/material'
 import dayjs from 'dayjs'
 import { Close, DeleteForever } from '@mui/icons-material'
