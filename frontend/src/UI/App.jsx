@@ -65,13 +65,13 @@ const DrawerLeft = () => {
           </ListItemButton>
         </ListItem>
 
-        <ListItem key={'Calender'}>
+        <ListItem key={'Calendar'}>
           <ListItemButton
             onClick={() => navigate('/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
-            <ListItemText primary={'Calender'} />
+            <ListItemText primary={'Calendar'} />
           </ListItemButton>
         </ListItem>
       </List>
