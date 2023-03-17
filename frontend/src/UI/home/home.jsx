@@ -21,7 +21,7 @@ const AppBar = () => {
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Here is your fitness history.
+          Here is your fitness history 📈
         </Typography>
       </Grid2>
 
@@ -122,11 +122,17 @@ const HomePage = () => {
         ml: 2,
       }}>
       <AppBar />
-      <Box sx={{ maxWidth: 600 }}>
-        {userWorkouts.length !== 0 && (
-          <BarChart input={parsedWorkout} />
-        )}
-      </Box>
+      {isAuthenticated ? (
+        <Box sx={{ maxWidth: 600 }}>
+          {userWorkouts.length !== 0 && (
+            <BarChart input={parsedWorkout} />
+          )}
+        </Box>
+      ) : (
+        <Typography variant='h5'>
+          Please login to view your fitness history
+        </Typography>
+      )}
       <Box
         sx={{
           position: 'fixed',
@@ -135,7 +141,7 @@ const HomePage = () => {
         }}>
         <Fab
           color='primary'
-          onClick={() => navigate('/new-workout')}>
+          onClick={() => navigate('/app/new-workout')}>
           <Add />
         </Fab>
       </Box>

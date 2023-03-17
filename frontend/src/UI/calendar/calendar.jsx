@@ -37,7 +37,7 @@ const AppBar = () => {
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Create a new workout. 💪
+          View your calendar 📅
         </Typography>
       </Grid2>
 
@@ -73,7 +73,6 @@ const ViewWorkoutPage = ({
       }
     )
     const res = await response.json()
-    console.log(res)
     refreshFunc()
     closeFunc()
   }
@@ -186,9 +185,6 @@ const Calender = () => {
   const [workoutData, setWorkoutData] = useState({})
 
   const fetchWorkouts = useCallback(async () => {
-    console.log(new Date(time.start))
-    console.log(new Date(time.end))
-
     setIsLoading(true)
     const response = await fetch(
       `http://localhost:8000/api/query-workouts?user=${encodeURIComponent(
@@ -198,7 +194,6 @@ const Calender = () => {
       )}&end=${Math.floor(time.end / 1000)}`
     )
     const data = await response.json()
-    console.log(data)
 
     const events = data.map((workout) => {
       return {
@@ -214,7 +209,6 @@ const Calender = () => {
   }, [time, user.sub])
 
   const handleSelect = async (event) => {
-    console.log(event)
     const name = event.title
     setIsLoading(true)
 
@@ -249,43 +243,43 @@ const Calender = () => {
     }
   }, [fetchWorkouts, isAuthenticated, time])
 
-  const onNavigate = (date, view) => {
-    let start_time = new Date(date)
-    let end_time = new Date(date)
+  const onRangeChange = (event) => {
+    console.log('event', event)
 
-    switch (view) {
-      case 'day':
+    if ('start' in event && 'end' in event) {
+      setTime({
+        start: event.start.getTime(),
+        end: event.end.getTime(),
+      })
+    } else if (Array.isArray(event)) {
+      console.log(event.length)
+      if (event.length > 1) {
+        setTime({
+          start: event[0].getTime(),
+          end: event.slice(-1)[0].getTime(),
+        })
+      } else {
+        const start_time = new Date(event)
+        const end_time = new Date(event)
         start_time.setHours(0, 0, 0, 0)
         end_time.setHours(23, 59, 59, 999)
-        break
 
-      case 'week':
-        start_time.setDate(date.getDate() - date.getDay()) //get latest Sunday before that day
-        end_time.setDate(start_time.getDate() + 6) //get earliest Saturday after that day
-        start_time.setHours(0, 0, 0, 0)
-        end_time.setHours(23, 59, 59, 999)
-        break
-
-      case 'month':
-        start_time.setDate(1) //first day of the month
-        end_time.setMonth(end_time.getMonth() + 1, 0) //last day of the month
-        start_time.setHours(0, 0, 0, 0)
-        end_time.setHours(23, 59, 59, 999)
-        break
-
-      case 'agenda':
-        start_time.setHours(0, 0, 0, 0)
-        end_time.setDate(start_time.getDate() + 30)
-        break
-
-      default:
-        throw new Error('Invalid view type')
+        setTime({
+          start: start_time.getTime(),
+          end: end_time.getTime(),
+        })
+      }
+    } else {
+      console.error(
+        'Invalid event type in onRangeChange',
+        event
+      )
     }
 
-    setTime({
-      start: start_time.getTime(),
-      end: end_time.getTime(),
-    })
+    // setTime({
+    //   start: start_time.getTime(),
+    //   end: end_time.getTime(),
+    // })
   }
 
   const eventStyleGetter = () => {
@@ -319,7 +313,7 @@ const Calender = () => {
             events={events}
             eventPropGetter={eventStyleGetter}
             selectable
-            onNavigate={onNavigate}
+            onRangeChange={onRangeChange}
             onSelectEvent={handleSelect}
             onSelectSlot={handleCreate}
             style={{ height: 500, margin: '50px' }}
@@ -345,6 +339,8 @@ const Calender = () => {
 }
 
 const CalenderPage = () => {
+  const { isAuthenticated } = useAuth0()
+
   return (
     <Box
       component='main'
@@ -355,7 +351,13 @@ const CalenderPage = () => {
         ml: 2,
       }}>
       <AppBar />
-      <Calender />
+      {isAuthenticated ? (
+        <Calender />
+      ) : (
+        <Typography variant='h5'>
+          Please login to view your calendar
+        </Typography>
+      )}
     </Box>
   )
 }
