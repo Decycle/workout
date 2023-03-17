@@ -180,6 +180,11 @@ const Calender = () => {
     }
   }
 
+  const calendarStyle = {
+    height: '600px',
+    margin: '50px'
+  };
+
   return (
     <div>
       {isAuthenticated && (
@@ -207,7 +212,7 @@ const Calender = () => {
             onRangeChange={onRangeChange}
             onSelectEvent={handleSelect}
             onSelectSlot={handleCreate}
-            style={{ height: 500, margin: '50px' }}
+            style={calendarStyle}
           />
           {workoutData && (
             <ViewWorkoutPage
