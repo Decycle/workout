@@ -13,6 +13,40 @@ import Grid from '@mui/material/Unstable_Grid2'
 
 import AppBar from '../appBar'
 
+const difficultyLabel = [
+  'beginner',
+  'intermediate',
+  'expert',
+]
+const workoutTypeLabel = [
+  'cardio',
+  'olympic_weightlifting',
+  'plyometrics',
+  'powerlifting',
+  'strength',
+  'stretching',
+  'strongman',
+]
+
+const muscleGroupLabel = [
+  'abdominals',
+  'abductors',
+  'adductors',
+  'biceps',
+  'calves',
+  'chest',
+  'forearms',
+  'glutes',
+  'hamstrings',
+  'lats',
+  'lower_back',
+  'middle_back',
+  'neck',
+  'quadriceps',
+  'traps',
+  'triceps',
+]
+
 const Charts = ({ workouts }) => {
   const parseBarData = (workouts) => {
     const today = dayjs()
@@ -51,7 +85,6 @@ const Charts = ({ workouts }) => {
         (workout) => workout[category] === label
       ).length
     })
-    console.log(data)
 
     return {
       labels: labels,
@@ -60,52 +93,44 @@ const Charts = ({ workouts }) => {
   }
 
   return (
-    <Box sx={{ maxWidth: 600 }}>
-      <BarChart input={parseBarData(workouts)} />
-      <PieChart
-        input={parsePieData(
-          ['beginner', 'intermediate', 'expert'],
-          'difficulty'
-        )(workouts)}
-      />
-      <PieChart
-        input={parsePieData(
-          [
-            'cardio',
-            'olympic_weightlifting',
-            'plyometrics',
-            'powerlifting',
-            'strength',
-            'stretching',
-            'strongman',
-          ],
-          'type'
-        )(workouts)}
-      />
-      <PieChart
-        input={parsePieData(
-          [
-            'abdominals',
-            'abductors',
-            'adductors',
-            'biceps',
-            'calves',
-            'chest',
-            'forearms',
-            'glutes',
-            'hamstrings',
-            'lats',
-            'lower_back',
-            'middle_back',
-            'neck',
-            'quadriceps',
-            'traps',
-            'triceps',
-          ],
-          'muscle'
-        )(workouts)}
-      />
-    </Box>
+    <Grid
+      container
+      sx={{
+        pr: 12,
+        pt: 4,
+      }}>
+      <Grid item xs={5}>
+        <Typography variant='h5'>Past Workouts</Typography>
+        <BarChart input={parseBarData(workouts)} />
+      </Grid>
+      <Grid item xs={5}>
+        <Typography variant='h5'>Difficulties</Typography>
+        <PieChart
+          input={parsePieData(
+            difficultyLabel,
+            'difficulty'
+          )(workouts)}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <Typography variant='h5'>Workout Types</Typography>
+        <PieChart
+          input={parsePieData(
+            workoutTypeLabel,
+            'type'
+          )(workouts)}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <Typography variant='h5'>Muscle Groups</Typography>
+        <PieChart
+          input={parsePieData(
+            muscleGroupLabel,
+            'muscle'
+          )(workouts)}
+        />
+      </Grid>
+    </Grid>
   )
 }
 
