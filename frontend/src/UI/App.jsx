@@ -98,7 +98,7 @@ const NavigateButton = () => {
     <Fab
       color='primary'
       sx={{
-        position: 'absolute',
+        position: 'fixed',
         bottom: 20,
         right: 20,
         zIndex: 1,
