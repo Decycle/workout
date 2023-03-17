@@ -23,7 +23,7 @@ const AppBar = () => {
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          See your past workouts 🕰️
+          See your fitness archives 📚
         </Typography>
       </Grid>
 
@@ -40,7 +40,7 @@ const AppBar = () => {
   )
 }
 
-const DailyWorkoutPage = () => {
+const FitnessArchivePage = () => {
   const { user, getAccessTokenSilently, isAuthenticated } =
     useAuth0()
 
@@ -117,4 +117,4 @@ const DailyWorkoutPage = () => {
   )
 }
 
-export default DailyWorkoutPage
+export default FitnessArchivePage

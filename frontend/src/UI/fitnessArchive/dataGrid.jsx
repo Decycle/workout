@@ -58,10 +58,12 @@ const DataGridTable = ({ data, refreshFunc }) => {
 
     const data = await response.json()
 
-    data['start_time'] = event.start
-    data['end_time'] = event.end
+    data['start_time'] = event.start * 1000
+    data['end_time'] = event.end * 1000
     data['id'] = event.id
 
+    console.log('EVENT', event)
+    console.log('DATA', data)
     setIsLoading(false)
     setWorkoutData(data)
     setOpenView(true)
@@ -82,19 +84,18 @@ const DataGridTable = ({ data, refreshFunc }) => {
       <DataGrid
         autoHeight
         columns={columns}
-        rows={data.map((workout) => {
-          console.log(workout)
-          return {
-            id: workout['_id'],
-            workout_name: workout['workout_name'],
-            difficulty: workout['difficulty'],
-            type: workout['type'],
-            muscle: workout['muscle'],
-            date: dayjs(
-              workout['start_time'] * 1000
-            ).format('MM/DD/YYYY'),
-          }
-        })}
+        rows={data.map((workout) => ({
+          id: workout['_id'],
+          workout_name: workout['workout_name'],
+          difficulty: workout['difficulty'],
+          type: workout['type'],
+          muscle: workout['muscle'],
+          date: dayjs(workout['start_time'] * 1000).format(
+            'MM/DD/YYYY'
+          ),
+          start: workout['start_time'],
+          end: workout['end_time'],
+        }))}
         getRowId={(row) => row.id}
         onRowClick={(rowData) => handleSelect(rowData.row)}
         initialState={{
