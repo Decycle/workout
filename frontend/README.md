@@ -1,6 +1,6 @@
-# Workout Application
+# Workout Application Frontend
 
-Create, manage, and track different exercise and workout routines with ease.
+This is our frontend implementation built using Node.js and React. It is designed to create, manage, and track different exercise and workout routines with ease. 
 
 ## Key Features
 
@@ -12,7 +12,10 @@ Create, manage, and track different exercise and workout routines with ease.
 - Provide feedback and review to workouts.
 - Keep track and log of workout history.
 
-## Usage and Installation
-
-WIP
-
+## Install instructions
+1. Navigate to frontend folder
+2. Install dependencies and run server
+```
+npm install
+npm start
+```

@@ -11,6 +11,8 @@ from datetime import datetime
 import pymongo
 from bson.objectid import ObjectId
 
+import numpy as np
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -86,6 +88,26 @@ async def search(prompt: str):
     print(response)
     return response
 
+def name_to_data(name):
+    embedding = list(np.zeros(1536))
+    response = index.query(
+      vector=embedding,
+      top_k=1,
+      include_values=False,
+      include_metadata=True,
+      filter={
+          "name": name
+      }
+    )
+    response = response['matches'][0]['metadata']
+    return response
+
+@app.get("/api/get-description")
+async def get_description(name: str):
+    data = name_to_data(name)
+    return data
+
+
 @app.get("/api/add-workout")
 def add_workout(user: str, name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
@@ -119,6 +141,24 @@ def query_workouts(user: str, start: int, end: int):
     }))
     for workout in workouts:
         workout['_id'] = str(workout['_id'])
+    return workouts
+
+@app.get("/api/query-workouts-data")
+def query_workouts_data(user: str, start: int, end: int):
+    """A valid access token is required to access this route"""
+    workouts = list(collection.find({
+        "user": user,
+        "start_time": {"$gte": start, "$lte": end},
+    }))
+
+
+    for workout in workouts:
+        workout['_id'] = str(workout['_id'])
+        data = name_to_data(workout['workout_name'])
+        for key, value in data.items():
+            workout[key] = value
+
+    print(workouts)
     return workouts
 
 @app.delete("/api/delete-workout")

@@ -1,13 +1,5 @@
-import { Add, Search } from '@mui/icons-material'
-import {
-  Box,
-  InputAdornment,
-  TextField,
-  Typography,
-  Card,
-  CardContent,
-  Fab,
-} from '@mui/material'
+import { Add } from '@mui/icons-material'
+import { Box, Typography, Fab } from '@mui/material'
 import dayjs from 'dayjs'
 
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import BarChart from './bar'
 import AuthButton from '../authButton'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const AppBar = () => {
   const { user, isAuthenticated } = useAuth0()
@@ -29,7 +21,7 @@ const AppBar = () => {
         </Typography>
 
         <Typography variant='subtitle1' component='h1'>
-          Here is your fitness history for the past week.
+          Here is your fitness history 📈
         </Typography>
       </Grid2>
 
@@ -54,7 +46,7 @@ const HomePage = () => {
   const [userWorkouts, setUserWorkouts] = useState([])
   const [parsedWorkout, setParsedWorkout] = useState({})
 
-  const fetchWorkouts = async () => {
+  const fetchWorkouts = useCallback(async () => {
     const accessToken = await getAccessTokenSilently()
     const response = await fetch(
       `http://localhost:8000/api/get-workouts?user=${encodeURIComponent(
@@ -68,13 +60,13 @@ const HomePage = () => {
     )
     const data = await response.json()
     setUserWorkouts(data)
-  }
+  }, [getAccessTokenSilently, user])
 
   useEffect(() => {
     if (isAuthenticated) {
       fetchWorkouts()
     }
-  }, [isAuthenticated])
+  }, [fetchWorkouts, isAuthenticated])
 
   const parseWorkout = (workouts) => {
     const today = dayjs()
@@ -132,11 +124,17 @@ const HomePage = () => {
         ml: 2,
       }}>
       <AppBar />
-      <Box sx={{ maxWidth: 600 }}>
-        {userWorkouts.length !== 0 && (
-          <BarChart input={parsedWorkout} />
-        )}
-      </Box>
+      {isAuthenticated ? (
+        <Box sx={{ maxWidth: 600 }}>
+          {userWorkouts.length !== 0 && (
+            <BarChart input={parsedWorkout} />
+          )}
+        </Box>
+      ) : (
+        <Typography variant='h5'>
+          Please login to view your fitness history
+        </Typography>
+      )}
       <Box
         sx={{
           position: 'fixed',

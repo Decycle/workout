@@ -1,39 +1,29 @@
 import {
-  Add,
   CalendarMonth,
   CalendarToday,
   FitnessCenter,
   Home,
-  Search,
 } from '@mui/icons-material'
 import {
   Box,
-  CircularProgress,
-  Container,
   Drawer,
-  InputAdornment,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  TextField,
-  Typography,
 } from '@mui/material'
 
-import Grid2 from '@mui/material/Unstable_Grid2'
-import { useState } from 'react'
 import {
   Route,
   Routes,
   Navigate,
   useNavigate,
-  redirect,
 } from 'react-router-dom'
 
 import HomePage from './home/home'
 import NewWorkOutPage from './newWorkout/newWorkout'
-import CalendarPage from './daily_workouts/daily_workout'
+import CalendarPage from './calendar/calendar'
 import DailyWorkoutPage from './daily_workouts/daily_workout'
 
 const drawerWidth = 200
@@ -76,14 +66,13 @@ const DrawerLeft = () => {
             <ListItemText primary={'Workout'} />
           </ListItemButton>
         </ListItem>
-      
-        <ListItem key={'Calender'}>
+        <ListItem key={'Calendar'}>
           <ListItemButton
             onClick={() => navigate('/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
-            <ListItemText primary={'Calender'} />
+            <ListItemText primary={'Calendar'} />
           </ListItemButton>
         </ListItem>
 
@@ -124,15 +113,15 @@ function App() {
           exact
           element={<NewWorkOutPage />}
         />
-        {/* <Route
-          path='/calendar'
-          exact
-          element={<CalendarPage />}
-        /> */}
         <Route
           path='/daily-workout'
           exact
           element={<DailyWorkoutPage />}
+        />
+        <Route
+          path='/calendar'
+          exact
+          element={<CalendarPage />}
         />
       </Routes>
     </Box>
