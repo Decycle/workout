@@ -1,6 +1,10 @@
-import { Box, Typography } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Typography,
+} from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
-import DataGridTable from './datagrid'
+import DataGridTable from './dataGrid'
 
 import { useCallback, useEffect, useState } from 'react'
 
@@ -41,8 +45,11 @@ const DailyWorkoutPage = () => {
     useAuth0()
 
   const [userWorkouts, setUserWorkouts] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchWorkouts = useCallback(async () => {
+    setIsLoading(true)
+
     const accessToken = await getAccessTokenSilently()
     const response = await fetch(
       `http://localhost:8000/api/get-workouts-data?user=${encodeURIComponent(
@@ -55,6 +62,7 @@ const DailyWorkoutPage = () => {
       }
     )
     const data = await response.json()
+    setIsLoading(false)
     setUserWorkouts(data)
   }, [getAccessTokenSilently, user])
 
@@ -81,7 +89,13 @@ const DailyWorkoutPage = () => {
           gap: 4,
         }}>
         {isAuthenticated ? (
-          userWorkouts.length ? (
+          isLoading ? (
+            <CircularProgress
+              sx={{
+                margin: 'auto',
+              }}
+            />
+          ) : userWorkouts.length ? (
             <DataGridTable
               data={userWorkouts}
               refreshFunc={fetchWorkouts}

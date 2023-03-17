@@ -26,7 +26,7 @@ import {
 import HomePage from './home/home'
 import NewWorkOutPage from './newWorkout/newWorkout'
 import CalendarPage from './calendar/calendar'
-import DailyWorkoutPage from './daily_workouts/daily_workout'
+import DailyWorkoutPage from './past_workouts/pastWorkout'
 
 const drawerWidth = 200
 
@@ -70,7 +70,7 @@ const DrawerLeft = () => {
         </ListItem>
         <ListItem key={'Calendar'}>
           <ListItemButton
-            onClick={() => navigate('/calendar')}>
+            onClick={() => navigate('/app/calendar')}>
             <ListItemIcon>
               <CalendarMonth />
             </ListItemIcon>
@@ -80,11 +80,11 @@ const DrawerLeft = () => {
 
         <ListItem key={'Daily_Workout'}>
           <ListItemButton
-            onClick={() => navigate('/daily-workout')}>
+            onClick={() => navigate('/app/past-workout')}>
             <ListItemIcon>
               <CalendarToday />
             </ListItemIcon>
-            <ListItemText primary={"Today's Workout"} />
+            <ListItemText primary={'Past Workouts'} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -134,12 +134,12 @@ function App() {
           element={<NewWorkOutPage />}
         />
         <Route
-          path='/daily-workout'
+          path='/app/past-workout'
           exact
           element={<DailyWorkoutPage />}
         />
         <Route
-          path='/calendar'
+          path='/app/calendar'
           exact
           element={<CalendarPage />}
         />
