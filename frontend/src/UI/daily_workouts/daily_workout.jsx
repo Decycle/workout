@@ -58,6 +58,7 @@ const DailyWorkoutPage = () => {
 
   const [userWorkouts, setUserWorkouts] = useState([])
   const [parsedWorkout, setParsedWorkout] = useState({})
+  const [hasWorkoutsToday, setHasWorkoutsToday] = useState(false)
 
   const fetchWorkouts = async () => {
     const accessToken = await getAccessTokenSilently()
@@ -98,23 +99,22 @@ const DailyWorkoutPage = () => {
         )
       }
     )
-
-    // for (let workout of workouts) {
-    //   console.log(workout['start_time'])
-    // }
-
-    // console.log('workouts', workouts)
-    // console.log('filteredWorkouts', filteredWorkouts)
     
-
     setParsedWorkout(filteredWorkouts)
   }
 
   useEffect(() => {
     if (userWorkouts.length > 0) {
       parseWorkout(userWorkouts)
+      console.log(userWorkouts)
     }
   }, [userWorkouts])
+
+  useEffect(() => {
+    if (parsedWorkout.length > 0) {
+      setHasWorkoutsToday(true)
+    }
+  }, [parsedWorkout])
 
   return (
       <Box
@@ -132,7 +132,10 @@ const DailyWorkoutPage = () => {
         gap: 4,
         }}>
         {isAuthenticated ? (
-          <DataGridTable data = {parsedWorkout} navigate = {navigate}/>
+          hasWorkoutsToday ? <DataGridTable data = {parsedWorkout} navigate = {navigate}/> : 
+            <Typography variant='h5'>
+              To view your workout schedule, add a workout first!
+            </Typography>
         ) : (
           <Typography variant='h5'>
             Please login first to view your workout schedule.
