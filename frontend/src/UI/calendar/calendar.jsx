@@ -127,7 +127,9 @@ const Calender = () => {
   }
 
   const handleCreate = (event) => {
-    setCreateTime(event.start)
+    const start = new Date(event.start)
+    start.setHours(12, 0, 0, 0)
+    setCreateTime(start)
     setOpenCreate(true)
   }
 

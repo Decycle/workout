@@ -27,10 +27,15 @@ collection = db["workouts"]
 openai.api_key = env.get("OPENAI_API_KEY")
 
 def get_embedding(prompt):
-    embeddings = openai.Embedding.create(
+    try:
+        embeddings = openai.Embedding.create(
         model="text-embedding-ada-002",
         input=prompt
-    )
+        )
+
+    except Exception as e:
+        print(f'{e} - Returning random embedding')
+        return list(np.random.uniform(-1, 1, 1536))
 
     return embeddings.data[0].embedding
 

@@ -1,7 +1,6 @@
 import {
   Add,
   CalendarMonth,
-  CalendarToday,
   FitnessCenter,
   Home,
   LibraryBooks,
