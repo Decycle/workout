@@ -44,12 +44,11 @@ const Charts = ({ workouts }) => {
     }
   }
 
-  const parsePieData = (workouts) => {
+  const parsePieData = (labels, category) => (workouts) => {
     console.log(workouts)
-    const labels = ['beginner', 'intermediate', 'expert']
     const data = labels.map((label) => {
       return workouts.filter(
-        (workout) => workout['difficulty'] === label
+        (workout) => workout[category] === label
       ).length
     })
     console.log(data)
@@ -62,12 +61,50 @@ const Charts = ({ workouts }) => {
 
   return (
     <Box sx={{ maxWidth: 600 }}>
-      {workouts.length !== 0 && (
-        <BarChart input={parseBarData(workouts)} />
-      )}
-      {workouts.length !== 0 && (
-        <PieChart input={parsePieData(workouts)} />
-      )}
+      <BarChart input={parseBarData(workouts)} />
+      <PieChart
+        input={parsePieData(
+          ['beginner', 'intermediate', 'expert'],
+          'difficulty'
+        )(workouts)}
+      />
+      <PieChart
+        input={parsePieData(
+          [
+            'cardio',
+            'olympic_weightlifting',
+            'plyometrics',
+            'powerlifting',
+            'strength',
+            'stretching',
+            'strongman',
+          ],
+          'type'
+        )(workouts)}
+      />
+      <PieChart
+        input={parsePieData(
+          [
+            'abdominals',
+            'abductors',
+            'adductors',
+            'biceps',
+            'calves',
+            'chest',
+            'forearms',
+            'glutes',
+            'hamstrings',
+            'lats',
+            'lower_back',
+            'middle_back',
+            'neck',
+            'quadriceps',
+            'traps',
+            'triceps',
+          ],
+          'muscle'
+        )(workouts)}
+      />
     </Box>
   )
 }
@@ -112,7 +149,9 @@ const HomePage = () => {
       }}>
       <AppBar message='Here is your fitness history 📈' />
       {isAuthenticated ? (
-        <Charts workouts={userWorkouts} />
+        userWorkouts.length && (
+          <Charts workouts={userWorkouts} />
+        )
       ) : (
         <Typography variant='h5'>
           Please login to view your fitness history

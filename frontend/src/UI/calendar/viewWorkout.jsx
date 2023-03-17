@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import dayjs from 'dayjs'
 import { Close, DeleteForever } from '@mui/icons-material'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const ViewWorkoutPage = ({
   open,
@@ -17,7 +18,10 @@ const ViewWorkoutPage = ({
   data,
   refreshFunc,
 }) => {
+  const { getAccessTokenSilently } = useAuth0()
+
   const deleteWorkout = async () => {
+    const token = await getAccessTokenSilently()
     const response = await fetch(
       `http://localhost:8000/api/delete-workout?id=${encodeURIComponent(
         data.id
@@ -26,6 +30,7 @@ const ViewWorkoutPage = ({
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       }
     )
