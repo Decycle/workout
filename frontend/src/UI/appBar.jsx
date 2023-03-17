@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import Grid2 from '@mui/material/Unstable_Grid2'
+import Grid from '@mui/material/Unstable_Grid2'
 import { Typography } from '@mui/material'
 
 import AuthButton from './authButton'
@@ -8,8 +8,8 @@ const AppBar = ({ message }) => {
   const { user, isAuthenticated } = useAuth0()
 
   return (
-    <Grid2 container spacing={2}>
-      <Grid2 item xs={4}>
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
         <Typography variant='h7' component='h1'>
           Welcome, {isAuthenticated ? user.name : 'User'} 👋
         </Typography>
@@ -17,9 +17,9 @@ const AppBar = ({ message }) => {
         <Typography variant='subtitle1' component='h1'>
           {message}
         </Typography>
-      </Grid2>
+      </Grid>
 
-      <Grid2
+      <Grid
         item
         xs={8}
         sx={{
@@ -27,8 +27,8 @@ const AppBar = ({ message }) => {
           justifyContent: 'flex-end',
         }}>
         <AuthButton />
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   )
 }
 

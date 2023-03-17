@@ -29,7 +29,6 @@ const AddWorkoutPage = ({
 
   const addExercise = async (name) => {
     const token = await getAccessTokenSilently()
-    console.log(startTime)
 
     const endTime = startTime.add(duration, 'minute')
 
@@ -46,7 +45,6 @@ const AddWorkoutPage = ({
       {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       }

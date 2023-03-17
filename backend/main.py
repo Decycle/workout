@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Response, status
 from fastapi.security import HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -88,6 +88,20 @@ async def search(prompt: str):
     print(response)
     return response
 
+def name_to_data(name):
+    embedding = list(np.zeros(1536))
+    response = index.query(
+      vector=embedding,
+      top_k=1,
+      include_values=False,
+      include_metadata=True,
+      filter={
+          "name": name
+      }
+    )
+    response = response['matches'][0]['metadata']
+    return response
+
 @app.get("/api/get-description")
 async def get_description(name: str):
     data = name_to_data(name)
@@ -95,9 +109,9 @@ async def get_description(name: str):
 
 
 @app.get("/api/add-workout")
-def add_workout(user: str, name: str, start: int, end: int,  token: str = Depends(token_auth_scheme)):
+def add_workout(user: str, name: str, start: int, end: int, response: Response, token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
-    result = token.credentials
+
     collection.insert_one({
         "user": user,
         "workout_name": name,
@@ -105,10 +119,10 @@ def add_workout(user: str, name: str, start: int, end: int,  token: str = Depend
         "end_time": end
     })
 
-    return result
+    return {"success": True}
 
 @app.get("/api/get-workouts")
-def get_workouts(user: str):
+def get_workouts(user: str, token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
 
     # result = token.credentials
@@ -117,8 +131,35 @@ def get_workouts(user: str):
         workout['_id'] = str(workout['_id'])
     return workouts
 
+@app.get("/api/get-workouts-data")
+def get_workouts_data(user: str, token: str = Depends(token_auth_scheme)):
+    """A valid access token is required to access this route"""
+    workouts = list(collection.find({
+        "user": user,
+    }))
+
+    for workout in workouts:
+        workout['_id'] = str(workout['_id'])
+
+    workout_names = set([workout['workout_name'] for workout in workouts])
+    workout_descriptions = {}
+
+    result = db['workout_descriptions'].find({'name': {'$in': list(workout_names)}})
+
+    workout_descriptions = {workout['name']: workout for workout in result}
+
+    for workout in workouts:
+        if workout['workout_name'] in workout_descriptions:
+            for key, value in workout_descriptions[workout['workout_name']].items():
+                if key != '_id' and key != 'name':
+                    workout[key] = value
+        else:
+            print("ERROR: No description found for " + workout['workout_name'])
+
+    return workouts
+
 @app.get("/api/query-workouts")
-def query_workouts(user: str, start: int, end: int):
+def query_workouts(user: str, start: int, end: int, token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
 
     workouts = list(collection.find({
@@ -130,7 +171,7 @@ def query_workouts(user: str, start: int, end: int):
     return workouts
 
 @app.get("/api/query-workouts-data")
-def query_workouts_data(user: str, start: int, end: int):
+def query_workouts_data(user: str, start: int, end: int, token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
     workouts = list(collection.find({
         "user": user,
@@ -158,7 +199,7 @@ def query_workouts_data(user: str, start: int, end: int):
     return workouts
 
 @app.delete("/api/delete-workout")
-def delete_workout(id: str):
+def delete_workout(id: str, token: str = Depends(token_auth_scheme)):
     """A valid access token is required to access this route"""
     obj_id = ObjectId(id)
     # delete the document with the specified id

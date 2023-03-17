@@ -6,9 +6,71 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import BarChart from './bar'
+import PieChart from './pie'
 import { useCallback, useEffect, useState } from 'react'
 
+import Grid from '@mui/material/Unstable_Grid2'
+
 import AppBar from '../appBar'
+
+const Charts = ({ workouts }) => {
+  const parseBarData = (workouts) => {
+    const today = dayjs()
+
+    const labels = new Array(7).fill(0).map((_, i) => {
+      return today.subtract(i, 'day').format('ddd')
+    })
+
+    const data = labels.map((_, i) => {
+      const date = today
+        .subtract(i, 'day')
+        .format('YYYY-MM-DD')
+
+      const filteredWorkouts = workouts.filter(
+        (workout) => {
+          return (
+            dayjs(workout['start_time'] * 1000).format(
+              'YYYY-MM-DD'
+            ) === date
+          )
+        }
+      )
+      return filteredWorkouts.length
+    })
+
+    return {
+      labels: labels.reverse(),
+      data: data.reverse(),
+    }
+  }
+
+  const parsePieData = (workouts) => {
+    console.log(workouts)
+    const labels = ['beginner', 'intermediate', 'expert']
+    const data = labels.map((label) => {
+      return workouts.filter(
+        (workout) => workout['difficulty'] === label
+      ).length
+    })
+    console.log(data)
+
+    return {
+      labels: labels,
+      data: data,
+    }
+  }
+
+  return (
+    <Box sx={{ maxWidth: 600 }}>
+      {workouts.length !== 0 && (
+        <BarChart input={parseBarData(workouts)} />
+      )}
+      {workouts.length !== 0 && (
+        <PieChart input={parsePieData(workouts)} />
+      )}
+    </Box>
+  )
+}
 
 const HomePage = () => {
   const navigate = useNavigate()
@@ -16,12 +78,11 @@ const HomePage = () => {
     useAuth0()
 
   const [userWorkouts, setUserWorkouts] = useState([])
-  const [parsedWorkout, setParsedWorkout] = useState({})
 
   const fetchWorkouts = useCallback(async () => {
     const accessToken = await getAccessTokenSilently()
     const response = await fetch(
-      `http://localhost:8000/api/get-workouts?user=${encodeURIComponent(
+      `http://localhost:8000/api/get-workouts-data?user=${encodeURIComponent(
         user.sub
       )}`,
       {
@@ -40,52 +101,6 @@ const HomePage = () => {
     }
   }, [fetchWorkouts, isAuthenticated])
 
-  const parseWorkout = (workouts) => {
-    const today = dayjs()
-
-    const labels = new Array(7).fill(0).map((_, i) => {
-      return today.subtract(i, 'day').format('ddd')
-    })
-
-    console.log(labels)
-
-    const data = labels.map((_, i) => {
-      const date = today
-        .subtract(i, 'day')
-        .format('YYYY-MM-DD')
-
-      const filteredWorkouts = workouts.filter(
-        (workout) => {
-          return (
-            dayjs(workout['start_time'] * 1000).format(
-              'YYYY-MM-DD'
-            ) === date
-          )
-        }
-      )
-      for (let workout of workouts) {
-        console.log(workout['start_time'])
-      }
-
-      console.log('workouts', workouts)
-      console.log('filteredWorkouts', filteredWorkouts)
-      return filteredWorkouts.length
-    })
-
-    console.log(data)
-
-    setParsedWorkout({
-      labels: labels.reverse(),
-      data: data.reverse(),
-    })
-  }
-
-  useEffect(() => {
-    if (userWorkouts.length > 0) {
-      parseWorkout(userWorkouts)
-    }
-  }, [userWorkouts])
-
   return (
     <Box
       component='main'
@@ -97,11 +112,7 @@ const HomePage = () => {
       }}>
       <AppBar message='Here is your fitness history 📈' />
       {isAuthenticated ? (
-        <Box sx={{ maxWidth: 600 }}>
-          {userWorkouts.length !== 0 && (
-            <BarChart input={parsedWorkout} />
-          )}
-        </Box>
+        <Charts workouts={userWorkouts} />
       ) : (
         <Typography variant='h5'>
           Please login to view your fitness history
