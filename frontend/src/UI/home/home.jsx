@@ -1,4 +1,8 @@
-import { Box, Typography } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Typography,
+} from '@mui/material'
 import dayjs from 'dayjs'
 import { useAuth0 } from '@auth0/auth0-react'
 
@@ -170,8 +174,14 @@ const HomePage = () => {
       }}>
       <AppBar message='Here is your fitness history 📈' />
       {isAuthenticated ? (
-        userWorkouts.length && (
+        userWorkouts.length !== 0 ? (
           <Charts workouts={userWorkouts} />
+        ) : (
+          <CircularProgress
+            sx={{
+              margin: 'auto',
+            }}
+          />
         )
       ) : (
         <Typography variant='h5'>
